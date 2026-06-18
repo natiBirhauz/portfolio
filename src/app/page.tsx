@@ -69,43 +69,95 @@ export default function Home() {
           Netanel Birhauz
         </h1>
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4 animate-fade-in">
-          Designer & Programmer
+          Programmer & A.I specialist
         </h2>
         <p className="max-w-xl text-lg text-gray-700 dark:text-gray-300 animate-fade-in">
-          Hi! I&apos;m **Netanel Birhauz**, programming and designing since I was 15 years old. I&apos;m an **M.Sc. student in Software Engineering** with a specialization in A.I. I love managing projects and teams and am passionate about programming and the people I work with.
+          Hi!
+           <br></br><br></br>welcome to my portfilio where you can see projects!
+          <br></br>my main focuse is on AI and networks.<br></br>
+           im a softwhere engeneer since i was 15 years old <br></br> M.Sc. in Software Engineering with a specialization in A.I. 
         </p>
-        <div className="flex flex-wrap gap-4 justify-center mt-4 animate-fade-in">
-          <span className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-4 py-2 rounded-full font-medium">Programmer</span>
-          <span className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-4 py-2 rounded-full font-medium">QA</span>
-          <span className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-4 py-2 rounded-full font-medium">Network Engineer</span>
-          <span className="bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200 px-4 py-2 rounded-full font-medium">Project Manager</span>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-8 mt-8 justify-center animate-fade-in">
-          <div className="bg-white/80 dark:bg-black/60 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 min-w-[220px] hover:scale-105 transition-transform duration-300">
-            <h3 className="font-semibold text-blue-700 dark:text-blue-400 mb-2">Tools</h3>
-            <ul className="text-gray-700 dark:text-gray-300 text-left list-disc list-inside">
-              <li>Wireshark</li>
-              <li>RF analyzer</li>
-              <li>Jira</li>
-              <li>Git</li>
-              <li>Firebase</li>
-              <li>Unity</li>
-              <li>WordPress</li>
-              <li>Photoshop</li>
-            </ul>
+        {/* Skills Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl px-4 mt-8 animate-fade-in">
+
+          {/* Roles */}
+          <div className="group bg-white/80 dark:bg-black/60 rounded-2xl shadow-lg p-6 border border-blue-100 dark:border-blue-900 hover:scale-105 hover:shadow-2xl transition-all duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-2xl">🧑‍💻</span>
+              <h3 className="font-bold text-lg text-blue-700 dark:text-blue-400">Roles</h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {["Programmer", "QA", "Network Engineer", "Project Manager"].map((r) => (
+                <span key={r} className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium">{r}</span>
+              ))}
+            </div>
           </div>
-          <div className="bg-white/80 dark:bg-black/60 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 min-w-[220px] hover:scale-105 transition-transform duration-300">
-            <h3 className="font-semibold text-purple-700 dark:text-purple-400 mb-2">Languages</h3>
-            <ul className="text-gray-700 dark:text-gray-300 text-left list-disc list-inside">
-              <li>Java</li>
-              <li>C</li>
-              <li>C++</li>
-              <li>HTML</li>
-              <li>CSS</li>
-              <li>Android</li>
-              <li>Python</li>
-            </ul>
+
+          {/* AI & ML Tools */}
+          <div className="group bg-white/80 dark:bg-black/60 rounded-2xl shadow-lg p-6 border border-purple-100 dark:border-purple-900 hover:scale-105 hover:shadow-2xl transition-all duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-2xl">🤖</span>
+              <h3 className="font-bold text-lg text-purple-700 dark:text-purple-400">AI &amp; ML</h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {["TensorFlow", "PyTorch", "LangGraph"].map((t) => (
+                <span key={t} className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full text-sm font-medium">{t}</span>
+              ))}
+            </div>
           </div>
+
+          {/* Dev & Infra Tools */}
+          <div className="group bg-white/80 dark:bg-black/60 rounded-2xl shadow-lg p-6 border border-green-100 dark:border-green-900 hover:scale-105 hover:shadow-2xl transition-all duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-2xl">🛠️</span>
+              <h3 className="font-bold text-lg text-green-700 dark:text-green-400">Dev &amp; Infra Tools</h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {["Git", "Firebase", "Unity", "WordPress", "Jira"].map((t) => (
+                <span key={t} className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full text-sm font-medium">{t}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Network & Hardware Tools */}
+          <div className="group bg-white/80 dark:bg-black/60 rounded-2xl shadow-lg p-6 border border-yellow-100 dark:border-yellow-900 hover:scale-105 hover:shadow-2xl transition-all duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-2xl">📡</span>
+              <h3 className="font-bold text-lg text-yellow-700 dark:text-yellow-400">Network &amp; Hardware</h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {["Wireshark", "RF Analyzer"].map((t) => (
+                <span key={t} className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full text-sm font-medium">{t}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Design Tools */}
+          <div className="group bg-white/80 dark:bg-black/60 rounded-2xl shadow-lg p-6 border border-pink-100 dark:border-pink-900 hover:scale-105 hover:shadow-2xl transition-all duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-2xl">🎨</span>
+              <h3 className="font-bold text-lg text-pink-700 dark:text-pink-400">Design</h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {["Photoshop"].map((t) => (
+                <span key={t} className="bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200 px-3 py-1 rounded-full text-sm font-medium">{t}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Languages */}
+          <div className="group bg-white/80 dark:bg-black/60 rounded-2xl shadow-lg p-6 border border-indigo-100 dark:border-indigo-900 hover:scale-105 hover:shadow-2xl transition-all duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-2xl">💻</span>
+              <h3 className="font-bold text-lg text-indigo-700 dark:text-indigo-400">Languages</h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {["CUDA", "Java", "C", "C++", "Python", "JavaScript", "HTML", "Android"].map((l) => (
+                <span key={l} className="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 px-3 py-1 rounded-full text-sm font-medium">{l}</span>
+              ))}
+            </div>
+          </div>
+
         </div>
       </section>
 

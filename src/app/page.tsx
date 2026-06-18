@@ -1,168 +1,279 @@
-import Image from "next/image";
+"use client";
 
-const projects = [
+import Image from "next/image";
+import { useState } from "react";
+import Reveal from "./components/Reveal";
+
+/* ── skill data ─────────────────────────────────────────── */
+const skills = [
   {
-    title: "Personal Portfolio",
-    description: "A beautiful, responsive portfolio website to showcase my design and programming skills.",
-    image: "/next.svg",
-    link: "#",
-    tags: ["Next.js", "TailwindCSS", "Design"],
+    id: "skills",
+    label: "Skills",
+    icon: "🧑‍💻",
+    color: "emerald",
+    items: ["Programmer", "QA", "Network Engineer", "Project Manager", "AI/ML Engineer", "Game Developer"],
   },
   {
-    title: "Creative UI Kit",
-    description: "A modern UI kit for rapid prototyping and beautiful interfaces.",
-    image: "/file.svg",
-    link: "#",
-    tags: ["UI/UX", "React", "Open Source"],
-    download: null,
+    id: "tools",
+    label: "Tools I Use",
+    icon: "🛠️",
+    color: "teal",
+    items: ["TensorFlow", "PyTorch", "LangGraph", "Wireshark", "RF Analyzer", "Jira", "Git", "Firebase", "Unity", "WordPress", "Photoshop", "Vercel"],
   },
   {
-    title: "Code Playground",
-    description: "An interactive coding playground for experimenting with JavaScript and CSS.",
-    image: "/window.svg",
-    link: "#",
-    tags: ["JavaScript", "CSS", "Fun"],
-    download: null,
-  },
-  {
-    title: "Unity Game Demo",
-    description: "A fun Unity game. Download and play!",
-    image: "/vercel.svg",
-    link: "#",
-    tags: ["Unity", "Game", "C#"],
-    download: "/downloads/unity-game.zip",
-  },
-  {
-    title: "Android APK App",
-    description: "A useful Android app. Download the APK to install.",
-    image: "/globe.svg",
-    link: "#",
-    tags: ["Android", "Java", "APK"],
-    download: "/downloads/myapp.apk",
+    id: "languages",
+    label: "Languages",
+    icon: "💻",
+    color: "green",
+    items: ["CUDA", "Java", "C", "C++", "C#", "Python", "JavaScript", "TypeScript", "HTML", "CSS", "Android"],
   },
 ];
 
+const colorMap: Record<string, {
+  border: string; header: string;
+  badge: string; badgeActive: string; chevron: string;
+}> = {
+  emerald: {
+    border:      "border-emerald-200",
+    header:      "text-emerald-700",
+    badge:       "bg-emerald-100 text-emerald-800 hover:bg-emerald-200",
+    badgeActive: "bg-emerald-500 text-white ring-2 ring-emerald-400 scale-110",
+    chevron:     "text-emerald-400",
+  },
+  teal: {
+    border:      "border-teal-200",
+    header:      "text-teal-700",
+    badge:       "bg-teal-100 text-teal-800 hover:bg-teal-200",
+    badgeActive: "bg-teal-500 text-white ring-2 ring-teal-400 scale-110",
+    chevron:     "text-teal-400",
+  },
+  green: {
+    border:      "border-green-200",
+    header:      "text-green-700",
+    badge:       "bg-green-100 text-green-800 hover:bg-green-200",
+    badgeActive: "bg-green-500 text-white ring-2 ring-green-400 scale-110",
+    chevron:     "text-green-400",
+  },
+};
+
+/* ── projects ───────────────────────────────────────────── */
+const projects = [
+  {
+    title: "DataMap",
+    description: "DataMap helps you map and understand data used for large language models. Python backend + web frontend for uploading, exploring, tagging, and visualizing prompt–response data.",
+    image: "/globe.svg",
+    link: "https://data-map-beta.vercel.app/",
+    git: "https://github.com/natiBirhauz/DataMap",
+    tags: ["Python", "JavaScript", "HTML", "CSS", "TensorFlow", "LangGraph", "Git", "Vercel", "AI/ML Engineer", "Programmer"],
+    download: null,
+  },
+  {
+    title: "תמצא לי",
+    description: "An AI tool to check the availability and prices for EVERYTHING — from a pen to a house. This demo is made with AI search prediction.",
+    image: "/window.svg",
+    link: "https://isr-aeli.vercel.app/",
+    git: null,
+    tags: ["Python", "JavaScript", "HTML", "CSS", "LangGraph", "PyTorch", "Vercel", "AI/ML Engineer", "Programmer"],
+    download: null,
+  },
+  {
+    title: "BallStrike",
+    description: "A fast-paced 3D arcade dodging game built with Unity as part of the Master's degree in Computer Science at Azrieli College of Engineering.",
+    image: "/file.svg",
+    link: "https://github.com/natiBirhauz/BallStrike",
+    git: "https://github.com/natiBirhauz/BallStrike",
+    tags: ["C#", "Unity", "Git", "Game Developer", "Programmer"],
+    download: null,
+  },
+];
+
+const normalize = (s: string) => s.toLowerCase().trim();
+const skillDirections = ["left", "up", "right"] as const;
+
+/* ── component ──────────────────────────────────────────── */
 export default function Home() {
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter]  = useState<string | null>(null);
+
+  const toggleDropdown = (id: string) =>
+    setOpenDropdown(openDropdown === id ? null : id);
+
+  const handleBadgeClick = (item: string) => {
+    setActiveFilter(activeFilter === item ? null : item);
+    if (activeFilter !== item) {
+      setTimeout(() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }), 100);
+    }
+  };
+
+  const isProjectHighlighted = (project: typeof projects[number]) =>
+    activeFilter === null ||
+    project.tags.some((tag) => normalize(tag) === normalize(activeFilter));
+
   return (
-    <div className="relative overflow-x-clip min-h-screen w-full">
-      {/* Decorative Color Spots & Animated Gradients */}
-      <div className="fixed inset-0 -z-10 w-full h-full bg-gradient-to-br from-[#f8fafc] via-[#e0e7ef] to-[#f8fafc] dark:from-[#18181b] dark:via-[#23272f] dark:to-[#18181b]" />
-      <div className="absolute top-[-80px] left-[-80px] w-72 h-72 bg-pink-300/40 rounded-full blur-3xl z-0 animate-pulse" />
-      <div className="absolute top-[60vh] right-[-100px] w-80 h-80 bg-blue-300/40 rounded-full blur-3xl z-0 animate-pulse" />
-      <div className="absolute bottom-[-100px] left-[40vw] w-60 h-60 bg-yellow-200/40 rounded-full blur-3xl z-0 animate-pulse" />
-      <div className="absolute top-[30vh] left-[-60px] w-40 h-40 bg-gradient-to-br from-purple-400/40 to-pink-400/30 rounded-full blur-2xl z-0 animate-spin-slow" />
-      
-      {/* About Section - Combined with Home */}
-      <section id="about" className="flex flex-col items-center justify-center min-h-[80vh] gap-10 text-center relative z-10 transition-all duration-700">
-        <div className="group relative">
-          <Image
-            src="/nati-avatar.webp"
-            alt="Nati Birhauz Avatar"
-            width={260}
-            height={260}
-            className="rounded-full shadow-2xl border-8 border-blue-400 group-hover:scale-105 transition-transform duration-500 bg-white/80"
-            priority
-          />
-          <span className="absolute -bottom-4 -right-4 w-12 h-12 bg-gradient-to-tr from-pink-400 to-blue-400 rounded-full blur-sm animate-bounce" />
-        </div>
-        <h1 className="text-5xl font-extrabold bg-gradient-to-r from-blue-700 via-purple-600 to-pink-500 bg-clip-text text-transparent mb-2 animate-gradient-x">
-          Netanel Birhauz
-        </h1>
-        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4 animate-fade-in">
-          Programmer & A.I specialist
-        </h2>
-        <p className="max-w-xl text-lg text-gray-700 dark:text-gray-300 animate-fade-in">
-          Hi!
-           <br></br><br></br>welcome to my portfilio where you can see projects!
-          <br></br>my main focuse is on AI and networks.<br></br>
-           im a softwhere engeneer since i was 15 years old <br></br> M.Sc. in Software Engineering with a specialization in A.I. 
-        </p>
-        {/* Skills Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-5xl px-4 mt-8 animate-fade-in">
+    <div className="relative overflow-x-clip min-h-screen w-full bg-white">
 
-          {/* Skills */}
-          <div className="bg-white/80 dark:bg-black/60 rounded-2xl shadow-lg p-6 border border-blue-100 dark:border-blue-900 hover:scale-105 hover:shadow-2xl transition-all duration-300">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl">🧑‍💻</span>
-              <h3 className="font-bold text-lg text-blue-700 dark:text-blue-400">Skills</h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {["Programmer", "QA", "Network Engineer", "Project Manager"].map((r) => (
-                <span key={r} className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium">{r}</span>
-              ))}
-            </div>
+      {/* ── ABOUT ─────────────────────────────────────── */}
+      <section id="about" className="flex flex-col items-center justify-center min-h-[90vh] gap-10 text-center relative z-10 mt-16 px-4">
+
+        <Reveal direction="down">
+          <div className="group relative">
+            <Image
+              src="/nati-avatar.webp"
+              alt="Nati Birhauz Avatar"
+              width={260} height={260}
+              className="rounded-full shadow-2xl border-8 border-emerald-400 group-hover:scale-105 transition-transform duration-500 bg-white"
+              priority
+            />
+            <span className="absolute -bottom-4 -right-4 w-12 h-12 bg-gradient-to-tr from-emerald-400 to-teal-400 rounded-full blur-sm animate-bounce" />
           </div>
+        </Reveal>
 
-          {/* Tools */}
-          <div className="bg-white/80 dark:bg-black/60 rounded-2xl shadow-lg p-6 border border-purple-100 dark:border-purple-900 hover:scale-105 hover:shadow-2xl transition-all duration-300">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl">🛠️</span>
-              <h3 className="font-bold text-lg text-purple-700 dark:text-purple-400">Tools I Use</h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {["TensorFlow", "PyTorch", "LangGraph", "Wireshark", "RF Analyzer", "Jira", "Git", "Firebase", "Unity", "WordPress", "Photoshop"].map((t) => (
-                <span key={t} className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full text-sm font-medium">{t}</span>
-              ))}
-            </div>
-          </div>
+        <Reveal direction="up" delay={150}>
+          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-emerald-600 via-teal-500 to-green-500 bg-clip-text text-transparent">
+            Netanel Birhauz
+          </h1>
+        </Reveal>
 
-          {/* Languages */}
-          <div className="bg-white/80 dark:bg-black/60 rounded-2xl shadow-lg p-6 border border-indigo-100 dark:border-indigo-900 hover:scale-105 hover:shadow-2xl transition-all duration-300">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl">�</span>
-              <h3 className="font-bold text-lg text-indigo-700 dark:text-indigo-400">Languages</h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {["CUDA", "Java", "C", "C++", "Python", "JavaScript", "HTML", "Android"].map((l) => (
-                <span key={l} className="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 px-3 py-1 rounded-full text-sm font-medium">{l}</span>
-              ))}
-            </div>
-          </div>
+        <Reveal direction="up" delay={300}>
+          <h2 className="text-2xl font-semibold text-gray-700">
+            Programmer &amp; A.I Specialist
+          </h2>
+        </Reveal>
 
+        <Reveal direction="left" delay={300}>
+          <p className="max-w-xl text-lg text-gray-600">
+            Hi!<br /><br />
+            Welcome to my portfolio where you can see my projects!<br />
+            My main focus is on AI and networks.<br />
+            I&apos;ve been a software engineer since I was 15 years old.<br />
+            M.Sc. in Software Engineering with a specialization in A.I.
+          </p>
+        </Reveal>
+
+        {/* Skill cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mt-4 items-start">
+          {skills.map((skill, i) => {
+            const isOpen = openDropdown === skill.id;
+            const colors = colorMap[skill.color];
+            return (
+              <Reveal key={skill.id} direction={skillDirections[i]} delay={i === 1 ? 200 : 0}>
+                <div className={`bg-white rounded-2xl shadow-lg border ${colors.border} transition-all duration-300 ${isOpen ? "shadow-2xl scale-105" : "hover:scale-105 hover:shadow-xl"}`}>
+                  <button onClick={() => toggleDropdown(skill.id)} className="w-full flex items-center justify-between p-6 cursor-pointer focus:outline-none">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{skill.icon}</span>
+                      <h3 className={`font-bold text-lg ${colors.header}`}>{skill.label}</h3>
+                    </div>
+                    <svg className={`w-5 h-5 transition-transform duration-300 ${colors.chevron} ${isOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+                    <div className="overflow-hidden">
+                      <div className="flex flex-wrap gap-2 px-6 pb-6">
+                        {skill.items.map((item) => (
+                          <button key={item} onClick={() => handleBadgeClick(item)}
+                            className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer select-none ${activeFilter === item ? colors.badgeActive : colors.badge}`}
+                            title={`Filter projects by "${item}"`}
+                          >{item}</button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="flex flex-col items-center justify-center min-h-[70vh] gap-8 py-16 relative z-10 transition-all duration-700">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2 text-center animate-fade-in">Projects</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full px-4 animate-fade-in">
-          {projects.map((project, idx) => (
-            <div key={idx} className="bg-white/80 dark:bg-black/60 rounded-xl shadow-lg p-6 flex flex-col gap-4 border border-gray-200 dark:border-gray-700 hover:scale-[1.05] transition-transform duration-300 hover:shadow-2xl">
-              <a href={project.link} target="_blank" rel="noopener noreferrer" className="block mx-auto">
-                <Image
-                  src={project.image}
-                  alt={project.title + ' image'}
-                  width={120}
-                  height={120}
-                  className="rounded-lg shadow-md hover:scale-110 transition-transform duration-300 bg-white"
-                />
-              </a>
-              <h2 className="text-2xl font-semibold text-blue-700 dark:text-blue-400">{project.title}</h2>
-              <p className="text-gray-700 dark:text-gray-300">{project.description}</p>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {project.tags.map((tag, i) => (
-                  <span key={i} className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full text-xs font-medium">{tag}</span>
-                ))}
-              </div>
-              <div className="flex gap-4 mt-2 justify-center">
-                <a href={project.link} className="text-blue-600 dark:text-blue-400 hover:underline font-medium" target="_blank" rel="noopener noreferrer">View Project</a>
-                {project.download && (
-                  <a href={project.download} className="text-green-600 dark:text-green-400 hover:underline font-medium" download>Download</a>
-                )}
-              </div>
-            </div>
-          ))}
+      {/* ── PROJECTS ──────────────────────────────────── */}
+      <section id="projects" className="flex flex-col items-center justify-center min-h-[70vh] gap-8 py-16 relative z-10 px-4">
+        <Reveal direction="right">
+          <div className="flex flex-col items-center gap-2 w-full">
+            <h1 className="text-5xl font-extrabold text-center bg-gradient-to-r from-emerald-600 via-teal-500 to-green-500 bg-clip-text text-transparent">
+              Projects
+            </h1>
+            <div className="h-1 w-24 rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 mt-1" />
+            <p className="text-gray-400 text-sm mt-1">Click any skill, tool, or language above to filter</p>
+          </div>
+        </Reveal>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+          {projects.map((project, idx) => {
+            const highlighted = isProjectHighlighted(project);
+            const dirs    = ["left", "up", "right"] as const;
+            const delays  = [0, 150, 300]            as const;
+            return (
+              <Reveal key={idx} direction={dirs[idx % 3]} delay={delays[idx % 3]}>
+                <div className={`relative bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4 border transition-all duration-500 h-full
+                  ${highlighted
+                    ? "border-emerald-400 shadow-emerald-100 shadow-xl scale-[1.03]"
+                    : "border-gray-200"}
+                  hover:scale-[1.05] hover:shadow-2xl`}
+                >
+                  {highlighted && activeFilter && (
+                    <span className="absolute inset-0 rounded-2xl ring-2 ring-emerald-400 pointer-events-none" />
+                  )}
+
+                  <a href={project.link} target="_blank" rel="noopener noreferrer" className="block mx-auto">
+                    <Image src={project.image} alt={project.title} width={100} height={100}
+                      className="rounded-xl shadow-md hover:scale-110 transition-transform duration-300 bg-white p-2" />
+                  </a>
+
+                  <h2 dir="ltr" className="text-2xl font-bold text-center bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                    {project.title}
+                  </h2>
+
+                  <p className="text-gray-600 text-sm leading-relaxed">{project.description}</p>
+
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    {project.tags.map((tag, i) => {
+                      const active = activeFilter !== null && normalize(tag) === normalize(activeFilter ?? "");
+                      return (
+                        <span key={i} className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200
+                          ${active ? "bg-emerald-500 text-white ring-2 ring-emerald-300 scale-110" : "bg-emerald-50 text-emerald-800"}`}>
+                          {tag}
+                        </span>
+                      );
+                    })}
+                  </div>
+
+                  <div className="flex gap-4 mt-auto pt-2 justify-center flex-wrap">
+                    <a href={project.link} target="_blank" rel="noopener noreferrer"
+                      className="px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-semibold shadow hover:scale-105 transition-transform duration-200">
+                      View Project
+                    </a>
+                    {project.git && (
+                      <a href={project.git} target="_blank" rel="noopener noreferrer"
+                        className="px-4 py-1.5 rounded-full bg-gray-800 text-white text-sm font-semibold shadow hover:scale-105 transition-transform duration-200">
+                        GitHub
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="flex flex-col items-center justify-center min-h-[40vh] gap-8 py-16 relative z-10 transition-all duration-700">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2 animate-fade-in">Contact</h1>
-        <p className="text-lg text-gray-700 dark:text-gray-300 animate-fade-in">Let&apos;s connect! Reach out to me on LinkedIn or GitHub.</p>
-        <div className="flex gap-6 animate-fade-in">
-          <a href="https://github.com/natibirhauz" target="_blank" rel="noopener noreferrer" className="px-6 py-2 rounded-full bg-gradient-to-r from-gray-900 to-blue-700 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-300">GitHub</a>
-          <a href="https://www.linkedin.com/in/nati-birhauz-296724159/" target="_blank" rel="noopener noreferrer" className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-700 to-pink-500 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-300">LinkedIn</a>
-        </div>
+      {/* ── CONTACT ───────────────────────────────────── */}
+      <section id="contact" className="flex flex-col items-center justify-center min-h-[40vh] gap-8 py-16 relative z-10 px-4">
+        <Reveal direction="left">
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Where to find me</h1>
+        </Reveal>
+        <Reveal direction="up" delay={200}>
+          <div className="flex gap-6">
+            <a href="https://github.com/natibirhauz" target="_blank" rel="noopener noreferrer"
+              className="px-6 py-2 rounded-full bg-gradient-to-r from-gray-800 to-emerald-700 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-300">
+              GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/nati-birhauz-296724159/" target="_blank" rel="noopener noreferrer"
+              className="px-6 py-2 rounded-full bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-300">
+              LinkedIn
+            </a>
+          </div>
+        </Reveal>
       </section>
     </div>
   );

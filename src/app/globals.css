@@ -12,53 +12,16 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 html {
   scroll-behavior: smooth;
 }
-body {
-  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+
+html, body {
+  background: #ffffff;
   min-height: 100vh;
   color: #222;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background: linear-gradient(135deg, #18181b 0%, #23272f 100%);
-    color: #f3f3f3;
-  }
-}
-
-html, body, #__next, #root {
-  min-height: 100vh;
-  min-width: 100vw;
-  width: 100vw;
-  height: 100vh;
-  box-sizing: border-box;
-}
-
-.bg-gradient-to-br {
-  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
-}
-
-@media (prefers-color-scheme: dark) {
-  .bg-gradient-to-br {
-    background: linear-gradient(135deg, #18181b 0%, #23272f 100%);
-  }
-}
-
-.fixed.inset-0 {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -10;
+  margin: 0;
+  padding: 0;
 }
 
 @keyframes fade-in {
@@ -84,13 +47,4 @@ html, body, #__next, #root {
 }
 .animate-spin-slow {
   animation: spin-slow 12s linear infinite;
-}
-
-/* Hide scrollbars on supported browsers */
-.no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-.no-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
 }

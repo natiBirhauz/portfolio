@@ -193,7 +193,7 @@ export default function Home() {
             <h1 className="text-5xl font-extrabold text-center bg-gradient-to-r from-emerald-600 via-teal-500 to-green-500 bg-clip-text text-transparent">
               Projects
             </h1>
-            <div className="h-1 w-24 rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 mt-2 mb-1" />
+            
 
           </div>
         </Reveal>

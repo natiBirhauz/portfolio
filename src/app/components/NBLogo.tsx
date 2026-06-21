@@ -3,13 +3,10 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Scroll-scrubbed video logo.
- *
- * Scrolling down plays the animation forward (0 → end).
- * Scrolling up plays it backward (end → 0).
- * scrollRange: how many px of scroll = one full pass of the animation.
+ * Full-screen background video that scrubs with scroll.
+ * scrollRange: px of scroll = full animation (forward on scroll down, backward on scroll up).
  */
-export default function NBLogo({ scrollRange = 600 }: { scrollRange?: number }) {
+export default function NBLogo({ scrollRange = 800 }: { scrollRange?: number }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -22,20 +19,15 @@ export default function NBLogo({ scrollRange = 600 }: { scrollRange?: number }) 
     const update = () => {
       const v = videoRef.current;
       if (!v || !v.duration || !isFinite(v.duration)) return;
-
-      // clamp scroll between 0 and scrollRange, map to 0..duration
       const progress = Math.min(Math.max(window.scrollY / scrollRange, 0), 1);
       v.currentTime = progress * v.duration;
     };
 
-    // run once after metadata is ready (in case page loaded mid-scroll)
-    const onMeta = () => update();
-
-    video.addEventListener("loadedmetadata", onMeta);
+    video.addEventListener("loadedmetadata", update);
     window.addEventListener("scroll", update, { passive: true });
 
     return () => {
-      video.removeEventListener("loadedmetadata", onMeta);
+      video.removeEventListener("loadedmetadata", update);
       window.removeEventListener("scroll", update);
     };
   }, [scrollRange]);
@@ -47,8 +39,8 @@ export default function NBLogo({ scrollRange = 600 }: { scrollRange?: number }) 
       muted
       playsInline
       preload="auto"
-      className="h-10 w-auto object-contain"
-      aria-label="NB logo animation"
+      aria-hidden="true"
+      className="fixed inset-0 w-full h-full object-cover z-0 pointer-events-none"
     />
   );
 }

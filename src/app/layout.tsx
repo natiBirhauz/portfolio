@@ -29,7 +29,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen scroll-smooth`}
       >
         <Navbar />
-        <div className="pt-32 px-2 sm:px-0 w-full">
+        <div className="pt-16 px-2 sm:px-0 w-full">
           {children}
         </div>
       </body>

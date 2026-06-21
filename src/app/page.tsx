@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import Reveal from "./components/Reveal";
+import NBLogo from "./components/NBLogo";
 
 /* ── skill data ─────────────────────────────────────────── */
 const skills = [
@@ -113,7 +114,13 @@ export default function Home() {
     project.tags.some((tag) => normalize(tag) === normalize(activeFilter));
 
   return (
-    <div className="relative overflow-x-clip min-h-screen w-full bg-white">
+    <div className="relative overflow-x-clip min-h-screen w-full">
+
+      {/* ── BACKGROUND ANIMATION ──────────────────────── */}
+      <NBLogo scrollRange={800} />
+
+      {/* overlay so content is readable over the video */}
+      <div className="fixed inset-0 z-[1] bg-white/70 pointer-events-none" />
 
       {/* ── ABOUT ─────────────────────────────────────── */}
       <section id="about" className="flex flex-col items-center justify-center min-h-[90vh] gap-10 text-center relative z-10 mt-16 px-4">

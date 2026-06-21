@@ -61,7 +61,7 @@ const projects = [
   {
     title: "DataMap",
     description: "DataMap helps you map and understand data used for large language models. Python backend + web frontend for uploading, exploring, tagging, and visualizing prompt–response data.",
-    image: "/globe.svg",
+    image: "/datamap.png",
     link: "https://data-map-beta.vercel.app/",
     git: "https://github.com/natiBirhauz/DataMap",
     tags: ["Python", "JavaScript", "HTML", "CSS", "TensorFlow", "LangGraph", "Git", "Vercel", "AI/ML Engineer", "Programmer"],
@@ -70,7 +70,7 @@ const projects = [
   {
     title: "תמצא לי",
     description: "An AI tool to check the availability and prices for EVERYTHING — from a pen to a house. This demo is made with AI search prediction.",
-    image: "/window.svg",
+    image: "/tmtza.png",
     link: "https://isr-aeli.vercel.app/",
     git: null,
     tags: ["Python", "JavaScript", "HTML", "CSS", "LangGraph", "PyTorch", "Vercel", "AI/ML Engineer", "Programmer"],
@@ -79,11 +79,11 @@ const projects = [
   {
     title: "BallStrike",
     description: "A fast-paced 3D arcade dodging game built with Unity as part of the Master's degree in Computer Science at Azrieli College of Engineering.",
-    image: "/file.svg",
+    image: "/ballstrike.png",
     link: "https://github.com/natiBirhauz/BallStrike",
     git: "https://github.com/natiBirhauz/BallStrike",
     tags: ["C#", "Unity", "Git", "Game Developer", "Programmer"],
-    download: null,
+    download: "https://natibirhauz.itch.io/ball-strike",
   },
 ];
 
@@ -216,8 +216,8 @@ export default function Home() {
                   )}
 
                   <a href={project.link} target="_blank" rel="noopener noreferrer" className="block mx-auto">
-                    <Image src={project.image} alt={project.title} width={100} height={100}
-                      className="rounded-xl shadow-md hover:scale-110 transition-transform duration-300 bg-white p-2" />
+                    <Image src={project.image} alt={project.title} width={280} height={180}
+                      className="rounded-xl shadow-md hover:scale-105 transition-transform duration-300 object-cover w-full h-44" />
                   </a>
 
                   <h2 dir="ltr" className="text-2xl font-bold text-center bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
@@ -247,6 +247,12 @@ export default function Home() {
                       <a href={project.git} target="_blank" rel="noopener noreferrer"
                         className="px-4 py-1.5 rounded-full bg-gray-800 text-white text-sm font-semibold shadow hover:scale-105 transition-transform duration-200">
                         GitHub
+                      </a>
+                    )}
+                    {project.download && (
+                      <a href={project.download} target="_blank" rel="noopener noreferrer"
+                        className="px-4 py-1.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white text-sm font-semibold shadow hover:scale-105 transition-transform duration-200">
+                        Play on itch.io
                       </a>
                     )}
                   </div>

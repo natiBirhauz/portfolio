@@ -35,7 +35,7 @@ export default function NBLogo({ scrollRange = 800 }: { scrollRange?: number }) 
   return (
     <video
       ref={videoRef}
-      src="/nb-animation.mp4"
+      src="/nb-animation.webm"
       muted
       playsInline
       preload="auto"

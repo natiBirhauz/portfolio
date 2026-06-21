@@ -66,6 +66,7 @@ const projects = [
     git: "https://github.com/natiBirhauz/DataMap",
     tags: ["Python", "JavaScript", "HTML", "CSS", "TensorFlow", "LangGraph", "Git", "Vercel", "AI/ML Engineer", "Programmer"],
     download: null,
+    hideViewProject: false,
   },
   {
     title: "תמצא לי",
@@ -75,6 +76,7 @@ const projects = [
     git: null,
     tags: ["Python", "JavaScript", "HTML", "CSS", "LangGraph", "PyTorch", "Vercel", "AI/ML Engineer", "Programmer"],
     download: null,
+    hideViewProject: false,
   },
   {
     title: "BallStrike",
@@ -84,6 +86,7 @@ const projects = [
     git: "https://github.com/natiBirhauz/BallStrike",
     tags: ["C#", "Unity", "Git", "Game Developer", "Programmer"],
     download: "https://natibirhauz.itch.io/ball-strike",
+    hideViewProject: true,
   },
 ];
 
@@ -239,10 +242,12 @@ export default function Home() {
                   </div>
 
                   <div className="flex gap-4 mt-auto pt-2 justify-center flex-wrap">
-                    <a href={project.link} target="_blank" rel="noopener noreferrer"
-                      className="px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-semibold shadow hover:scale-105 transition-transform duration-200">
-                      View Project
-                    </a>
+                    {!project.hideViewProject && (
+                      <a href={project.link} target="_blank" rel="noopener noreferrer"
+                        className="px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-semibold shadow hover:scale-105 transition-transform duration-200">
+                        View Project
+                      </a>
+                    )}
                     {project.git && (
                       <a href={project.git} target="_blank" rel="noopener noreferrer"
                         className="px-4 py-1.5 rounded-full bg-gray-800 text-white text-sm font-semibold shadow hover:scale-105 transition-transform duration-200">

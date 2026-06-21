@@ -3,37 +3,60 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Plays the NB animation video in sync with scroll.
- * The video is muted/paused — its currentTime is driven by
- * how far the user has scrolled through the page.
+ * Scroll-scrubbed video logo.
  *
- * scrollRange: how many pixels of scrolling = full animation (default 600px)
+ * - Uses rAF + lerp for smooth seeking (no jank)
+ * - Loops: when the video reaches the end it wraps back to 0 and keeps going
+ * - scrollRange: px of scroll = one full loop of the animation
  */
-export default function NBLogo({ scrollRange = 600 }: { scrollRange?: number }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+export default function NBLogo({ scrollRange = 500 }: { scrollRange?: number }) {
+  const videoRef    = useRef<HTMLVideoElement>(null);
+  const targetTime  = useRef(0);   // where we want the playhead
+  const currentTime = useRef(0);   // where it actually is (lerped)
+  const rafId       = useRef(0);
+  const LERP        = 0.12;        // 0 = instant, 1 = never moves — 0.12 feels smooth
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Make sure it's loaded so we can seek
     video.pause();
     video.currentTime = 0;
 
+    // ── scroll handler: update target time ──────────────────
     const onScroll = () => {
-      const progress = Math.min(window.scrollY / scrollRange, 1); // 0 → 1
-      if (video.duration && isFinite(video.duration)) {
-        video.currentTime = progress * video.duration;
-      }
+      const v = videoRef.current;
+      if (!v || !v.duration || !isFinite(v.duration)) return;
+
+      // How many full loops has the user scrolled through?
+      const raw      = window.scrollY / scrollRange;       // e.g. 2.7 = 2 full loops + 70%
+      const looped   = raw % 1;                            // fractional part → 0..1
+      targetTime.current = looped * v.duration;
     };
 
-    // Also seek once metadata is ready in case user already scrolled
-    const onLoaded = () => onScroll();
-    video.addEventListener("loadedmetadata", onLoaded);
+    // ── rAF loop: lerp currentTime toward target ─────────────
+    const tick = () => {
+      const v = videoRef.current;
+      if (v && v.duration && isFinite(v.duration)) {
+        // Lerp
+        currentTime.current += (targetTime.current - currentTime.current) * LERP;
+        // Clamp
+        const t = Math.max(0, Math.min(v.duration, currentTime.current));
+        // Only seek if meaningfully different (avoids micro-seeks)
+        if (Math.abs(v.currentTime - t) > 0.005) {
+          v.currentTime = t;
+        }
+      }
+      rafId.current = requestAnimationFrame(tick);
+    };
+
+    video.addEventListener("loadedmetadata", onScroll);
     window.addEventListener("scroll", onScroll, { passive: true });
+    rafId.current = requestAnimationFrame(tick);
 
     return () => {
-      video.removeEventListener("loadedmetadata", onLoaded);
+      cancelAnimationFrame(rafId.current);
+      video.removeEventListener("loadedmetadata", onScroll);
       window.removeEventListener("scroll", onScroll);
     };
   }, [scrollRange]);

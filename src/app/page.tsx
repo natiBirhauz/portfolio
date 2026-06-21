@@ -120,7 +120,7 @@ export default function Home() {
       <NBLogo scrollRange={800} />
 
       {/* overlay so content is readable over the video */}
-      <div className="fixed inset-0 z-[1] bg-white/70 pointer-events-none" />
+      <div className="fixed inset-0 z-[2] bg-white/60 pointer-events-none" />
 
       {/* ── ABOUT ─────────────────────────────────────── */}
       <section id="about" className="flex flex-col items-center justify-center min-h-[90vh] gap-10 text-center relative z-10 mt-16 px-4">

@@ -33,14 +33,29 @@ export default function NBLogo({ scrollRange = 800 }: { scrollRange?: number }) 
   }, [scrollRange]);
 
   return (
-    <video
-      ref={videoRef}
-      src="/nb-animation.webm"
-      muted
-      playsInline
-      preload="auto"
-      aria-hidden="true"
-      className="fixed inset-0 w-full h-full object-cover z-0 pointer-events-none"
-    />
+    <>
+      {/* Video — natural size, centered, no upscaling */}
+      <video
+        ref={videoRef}
+        src="/nb-animation.webm"
+        muted
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+        className="fixed inset-0 w-full h-full object-contain z-0 pointer-events-none"
+      />
+
+      {/* Emerald/teal tint overlay — multiply blends with the video:
+          white areas pick up the green color, black letters stay dark */}
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 z-[1] pointer-events-none"
+        style={{
+          background: "linear-gradient(135deg, #d1fae5 0%, #99f6e4 50%, #a7f3d0 100%)",
+          mixBlendMode: "multiply",
+          opacity: 0.85,
+        }}
+      />
+    </>
   );
 }

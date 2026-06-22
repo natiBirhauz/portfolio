@@ -16,9 +16,9 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Dark mode: deep green-dark tone */
+/* Dark mode: deep forest green */
 .dark {
-  --background: #020d08;
+  --background: #061410;
   --foreground: #e8faf2;
 }
 

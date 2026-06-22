@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 /**
  * Full-screen background video that scrubs with scroll.
- * scrollRange: px of scroll = full animation (forward on scroll down, backward on scroll up).
+ * Edges fade top/bottom so it blends into the page background.
  */
 export default function NBLogo({ scrollRange = 1600 }: { scrollRange?: number }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -33,33 +33,19 @@ export default function NBLogo({ scrollRange = 1600 }: { scrollRange?: number })
   }, [scrollRange]);
 
   return (
-    <>
-      {/* Video — natural size, centered, no upscaling */}
-      <video
-        ref={videoRef}
-        src="/nb-animation.webm"
-        muted
-        playsInline
-        preload="auto"
-        aria-hidden="true"
-        className="fixed inset-0 w-full h-full object-contain z-0 pointer-events-none"
-        style={{
-          maskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
-        }}
-      />
-
-      {/* Emerald/teal tint overlay — multiply blends with the video:
-          white areas pick up the green color, black letters stay dark */}
-      <div
-        aria-hidden="true"
-        className="fixed inset-0 z-[1] pointer-events-none"
-        style={{
-          background: "linear-gradient(135deg, #d1fae5 0%, #99f6e4 50%, #a7f3d0 100%)",
-          mixBlendMode: "multiply",
-          opacity: 0.85,
-        }}
-      />
-    </>
+    <video
+      ref={videoRef}
+      src="/nb-animation.webm"
+      muted
+      playsInline
+      preload="auto"
+      aria-hidden="true"
+      className="fixed inset-0 w-full h-full object-contain z-0 pointer-events-none"
+      style={{
+        maskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
+        opacity: 0.18,
+      }}
+    />
   );
 }

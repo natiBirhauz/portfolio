@@ -126,8 +126,7 @@ export default function Home() {
       {/* ── BACKGROUND ANIMATION ──────────────────────── */}
       <NBLogo scrollRange={1600} />
 
-      {/* overlay so content is readable over the video */}
-      <div className="fixed inset-0 z-[2] bg-white/40 dark:bg-[#020d08]/75 pointer-events-none" />
+      {/* no overlay needed — video opacity handles visibility */}
 
       {/* ── ABOUT ─────────────────────────────────────── */}
       <section id="about" className="flex flex-col items-center justify-center min-h-[90vh] gap-10 text-center relative z-10 mt-16 px-4">

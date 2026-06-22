@@ -40,11 +40,11 @@ export default function NBLogo({ scrollRange = 1600 }: { scrollRange?: number })
       playsInline
       preload="auto"
       aria-hidden="true"
-      className="fixed inset-0 w-full h-full object-contain z-0 pointer-events-none"
+      className="fixed inset-0 w-full h-full object-cover z-0 pointer-events-none"
       style={{
-        maskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
-        WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
-        opacity: 0.18,
+        maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+        opacity: 0.22,
       }}
     />
   );

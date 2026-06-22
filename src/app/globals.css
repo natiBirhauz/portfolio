@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f0fdf4;
   --foreground: #171717;
 }
 
@@ -18,7 +18,7 @@ html {
 
 /* Dark mode: deep forest green */
 .dark {
-  --background: #061410;
+  --background: #0a1f14;
   --foreground: #e8faf2;
 }
 

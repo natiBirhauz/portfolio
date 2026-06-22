@@ -25,6 +25,20 @@ const en = {
     ],
   },
   projects: { heading: "Projects", viewProject: "View Project", github: "GitHub", play: "Play on itch.io" },
+  projectList: [
+    {
+      title: "DataMap",
+      description: "DataMap helps you map and understand data used for large language models. Python backend + web frontend for uploading, exploring, tagging, and visualizing prompt–response data.",
+    },
+    {
+      title: "תמצא לי",
+      description: "An AI tool to check the availability and prices for EVERYTHING — from a pen to a house. This demo is made with AI search prediction.",
+    },
+    {
+      title: "BallStrike",
+      description: "A fast-paced 3D arcade dodging game built with Unity as part of the Master's degree in Computer Science at Azrieli College of Engineering.",
+    },
+  ],
   contact: { heading: "Where to find me", email: "Email me" },
   skills: { heading: "Skills", tools: "Tools I Use", languages: "Languages" },
 };
@@ -50,6 +64,20 @@ const he: Translations = {
     ],
   },
   projects: { heading: "פרויקטים", viewProject: "צפה בפרויקט", github: "GitHub", play: "שחק ב-itch.io" },
+  projectList: [
+    {
+      title: "DataMap",
+      description: "DataMap עוזרת לך למפות ולהבין נתונים המשמשים למודלי שפה גדולים. Backend בפייתון ו-Frontend ווב להעלאה, חקירה, תיוג והדמיה של נתוני פרומפט-תשובה.",
+    },
+    {
+      title: "תמצא לי",
+      description: "כלי AI לבדיקת זמינות ומחירים של הכל — מעט ועד בית. הדמו נבנה עם חיזוי חיפוש מבוסס AI.",
+    },
+    {
+      title: "BallStrike",
+      description: "משחק ארקייד תלת-ממדי מהיר שנבנה עם Unity כחלק מהתואר השני במדעי המחשב במכללת עזריאלי להנדסה.",
+    },
+  ],
   contact: { heading: "איפה למצוא אותי", email: "שלח לי מייל" },
   skills: { heading: "כישורים", tools: "כלים בשימוש", languages: "שפות תכנות" },
 };
@@ -65,7 +93,7 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
   const toggle = () => setLang(l => l === "en" ? "he" : "en");
   return (
     <LangContext.Provider value={{ lang, t: translations[lang], toggle }}>
-      <div dir={lang === "he" ? "rtl" : "ltr"}>{children}</div>
+      <div dir={lang === "he" ? "rtl" : "ltr"} lang={lang}>{children}</div>
     </LangContext.Provider>
   );
 }

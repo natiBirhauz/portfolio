@@ -56,11 +56,11 @@ const colorMap: Record<string, {
   },
 };
 
-/* ── projects ───────────────────────────────────────────── */
+/* ── projects (static data — descriptions come from t.projectList) ── */
 const projects = [
   {
+    key: 0,
     title: "DataMap",
-    description: "DataMap helps you map and understand data used for large language models. Python backend + web frontend for uploading, exploring, tagging, and visualizing prompt–response data.",
     image: "/datamap.png",
     link: "https://data-map-beta.vercel.app/",
     git: "https://github.com/natiBirhauz/DataMap",
@@ -69,8 +69,8 @@ const projects = [
     hideViewProject: false,
   },
   {
+    key: 1,
     title: "תמצא לי",
-    description: "An AI tool to check the availability and prices for EVERYTHING — from a pen to a house. This demo is made with AI search prediction.",
     image: "/tmtza.png",
     link: "https://isr-aeli.vercel.app/",
     git: null,
@@ -79,8 +79,8 @@ const projects = [
     hideViewProject: false,
   },
   {
+    key: 2,
     title: "BallStrike",
-    description: "A fast-paced 3D arcade dodging game built with Unity as part of the Master's degree in Computer Science at Azrieli College of Engineering.",
     image: "/ballstrike.png",
     link: "https://github.com/natiBirhauz/BallStrike",
     git: "https://github.com/natiBirhauz/BallStrike",
@@ -127,7 +127,7 @@ export default function Home() {
       <NBLogo scrollRange={1600} />
 
       {/* overlay so content is readable over the video */}
-      <div className="fixed inset-0 z-[2] bg-white/60 dark:bg-gray-950/60 pointer-events-none" />
+      <div className="fixed inset-0 z-[2] bg-[#f0fdf8]/70 dark:bg-gray-950/70 pointer-events-none" />
 
       {/* ── ABOUT ─────────────────────────────────────── */}
       <section id="about" className="flex flex-col items-center justify-center min-h-[90vh] gap-10 text-center relative z-10 mt-16 px-4">
@@ -169,7 +169,7 @@ export default function Home() {
           />
 
           {/* card body */}
-          <div className="relative rounded-3xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-md px-12 py-10 shadow-2xl z-10 flex flex-col gap-6 text-left overflow-hidden">
+          <div className="relative rounded-3xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-md px-12 py-10 shadow-2xl z-10 flex flex-col gap-6 text-start overflow-hidden">
 
             {/* top accent bar */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 rounded-t-3xl" />
@@ -299,7 +299,7 @@ export default function Home() {
                     {project.title}
                   </h2>
 
-                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{project.description}</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{t.projectList[project.key].description}</p>
 
                   <div className="flex flex-wrap gap-2 mt-1">
                     {project.tags.map((tag, i) => {

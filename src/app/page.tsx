@@ -4,26 +4,25 @@ import Image from "next/image";
 import { useState } from "react";
 import Reveal from "./components/Reveal";
 import NBLogo from "./components/NBLogo";
+import SkillSpotlight from "./components/SkillSpotlight";
+import { useLang } from "./context/LangContext";
 
 /* ── skill data ─────────────────────────────────────────── */
 const skills = [
   {
     id: "skills",
-    label: "Skills",
     icon: "🧑‍💻",
     color: "emerald",
     items: ["Programmer", "QA", "Network Engineer", "Project Manager", "AI/ML Engineer", "Game Developer"],
   },
   {
     id: "tools",
-    label: "Tools I Use",
     icon: "🛠️",
     color: "teal",
     items: ["TensorFlow", "PyTorch", "LangGraph", "Wireshark", "RF Analyzer", "Jira", "Git", "Firebase", "Unity", "WordPress", "Photoshop", "Vercel"],
   },
   {
     id: "languages",
-    label: "Languages",
     icon: "💻",
     color: "green",
     items: ["CUDA", "Java", "C", "C++", "C#", "Python", "JavaScript", "TypeScript", "HTML", "CSS", "Android"],
@@ -35,23 +34,23 @@ const colorMap: Record<string, {
   badge: string; badgeActive: string; chevron: string;
 }> = {
   emerald: {
-    border:      "border-emerald-200",
-    header:      "text-emerald-700",
-    badge:       "bg-emerald-100 text-emerald-800 hover:bg-emerald-200",
+    border:      "border-emerald-200 dark:border-emerald-800",
+    header:      "text-emerald-700 dark:text-emerald-400",
+    badge:       "bg-emerald-100 text-emerald-800 hover:bg-emerald-200 dark:bg-emerald-900 dark:text-emerald-200 dark:hover:bg-emerald-800",
     badgeActive: "bg-emerald-500 text-white ring-2 ring-emerald-400 scale-110",
     chevron:     "text-emerald-400",
   },
   teal: {
-    border:      "border-teal-200",
-    header:      "text-teal-700",
-    badge:       "bg-teal-100 text-teal-800 hover:bg-teal-200",
+    border:      "border-teal-200 dark:border-teal-800",
+    header:      "text-teal-700 dark:text-teal-400",
+    badge:       "bg-teal-100 text-teal-800 hover:bg-teal-200 dark:bg-teal-900 dark:text-teal-200 dark:hover:bg-teal-800",
     badgeActive: "bg-teal-500 text-white ring-2 ring-teal-400 scale-110",
     chevron:     "text-teal-400",
   },
   green: {
-    border:      "border-green-200",
-    header:      "text-green-700",
-    badge:       "bg-green-100 text-green-800 hover:bg-green-200",
+    border:      "border-green-200 dark:border-green-800",
+    header:      "text-green-700 dark:text-green-400",
+    badge:       "bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900 dark:text-green-200 dark:hover:bg-green-800",
     badgeActive: "bg-green-500 text-white ring-2 ring-green-400 scale-110",
     chevron:     "text-green-400",
   },
@@ -96,8 +95,16 @@ const skillDirections = ["left", "up", "right"] as const;
 
 /* ── component ──────────────────────────────────────────── */
 export default function Home() {
+  const { t } = useLang();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [activeFilter, setActiveFilter]  = useState<string | null>(null);
+
+  // Build skill labels from translations
+  const skillLabels: Record<string, string> = {
+    skills: t.skills.heading,
+    tools: t.skills.tools,
+    languages: t.skills.languages,
+  };
 
   const toggleDropdown = (id: string) =>
     setOpenDropdown(openDropdown === id ? null : id);
@@ -111,7 +118,7 @@ export default function Home() {
 
   const isProjectHighlighted = (project: typeof projects[number]) =>
     activeFilter === null ||
-    project.tags.some((tag) => normalize(tag) === normalize(activeFilter));
+    project.tags.some((tag) => normalize(tag) === normalize(activeFilter ?? ""));
 
   return (
     <div className="relative overflow-x-clip min-h-screen w-full">
@@ -120,7 +127,7 @@ export default function Home() {
       <NBLogo scrollRange={1600} />
 
       {/* overlay so content is readable over the video */}
-      <div className="fixed inset-0 z-[2] bg-white/60 pointer-events-none" />
+      <div className="fixed inset-0 z-[2] bg-white/60 dark:bg-gray-950/60 pointer-events-none" />
 
       {/* ── ABOUT ─────────────────────────────────────── */}
       <section id="about" className="flex flex-col items-center justify-center min-h-[90vh] gap-10 text-center relative z-10 mt-16 px-4">
@@ -140,13 +147,13 @@ export default function Home() {
 
         <Reveal direction="up" delay={150}>
           <h1 className="text-5xl font-extrabold bg-gradient-to-r from-emerald-600 via-teal-500 to-green-500 bg-clip-text text-transparent">
-            Netanel Birhauz
+            {t.hero.title}
           </h1>
         </Reveal>
 
         <Reveal direction="up" delay={300}>
-          <h2 className="text-2xl font-semibold text-gray-700">
-            Programmer &amp; A.I Specialist
+          <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-300">
+            {t.hero.subtitle}
           </h2>
         </Reveal>
 
@@ -162,7 +169,7 @@ export default function Home() {
           />
 
           {/* card body */}
-          <div className="relative rounded-3xl bg-white/90 backdrop-blur-md px-12 py-10 shadow-2xl z-10 flex flex-col gap-6 text-left overflow-hidden">
+          <div className="relative rounded-3xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-md px-12 py-10 shadow-2xl z-10 flex flex-col gap-6 text-left overflow-hidden">
 
             {/* top accent bar */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 rounded-t-3xl" />
@@ -172,7 +179,7 @@ export default function Home() {
               className="animate-blur-up text-4xl font-black bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 bg-clip-text text-transparent tracking-tight"
               style={{ animationDelay: "0.4s" }}
             >
-              Hi, I&apos;m Nati!
+              {t.bio.greeting}
             </p>
 
             {/* divider */}
@@ -183,34 +190,35 @@ export default function Home() {
 
             {/* lines */}
             <p
-              className="animate-blur-up text-xl text-gray-700 leading-relaxed font-medium"
+              className="animate-blur-up text-xl text-gray-700 dark:text-gray-300 leading-relaxed font-medium"
               style={{ animationDelay: "0.65s" }}
             >
-              Welcome to my portfolio — a place where code meets creativity.
+              {t.bio.line1}
             </p>
 
             <p
-              className="animate-blur-up text-xl text-gray-700 leading-relaxed"
+              className="animate-blur-up text-xl text-gray-700 dark:text-gray-300 leading-relaxed"
               style={{ animationDelay: "0.8s" }}
             >
-              My main focus is{" "}
-              <span className="font-bold text-emerald-600">AI</span> and{" "}
-              <span className="font-bold text-teal-600">networks</span>.
+              {t.bio.line2a}{" "}
+              <span className="font-bold text-emerald-600">{t.bio.line2b}</span>{" "}
+              {t.bio.line2c}{" "}
+              <span className="font-bold text-teal-600">{t.bio.line2d}</span>.
             </p>
 
             <p
-              className="animate-blur-up text-xl text-gray-700 leading-relaxed"
+              className="animate-blur-up text-xl text-gray-700 dark:text-gray-300 leading-relaxed"
               style={{ animationDelay: "0.95s" }}
             >
-              I&apos;ve been building software since I was{" "}
-              <span className="font-bold text-emerald-600">15 years old</span>.
+              {t.bio.line3a}{" "}
+              <span className="font-bold text-emerald-600">{t.bio.line3b}</span>.
             </p>
 
             <p
-              className="animate-blur-up text-xl text-gray-700 leading-relaxed"
+              className="animate-blur-up text-xl text-gray-700 dark:text-gray-300 leading-relaxed"
               style={{ animationDelay: "1.1s" }}
             >
-              <span className="font-bold text-teal-600">M.Sc. Software Engineering</span> — specialization in A.I.
+              <span className="font-bold text-teal-600">{t.bio.line4a}</span>{t.bio.line4b}
             </p>
 
           </div>
@@ -223,11 +231,11 @@ export default function Home() {
             const colors = colorMap[skill.color];
             return (
               <Reveal key={skill.id} direction={skillDirections[i]} delay={i === 1 ? 200 : 0}>
-                <div className={`bg-white rounded-2xl shadow-lg border ${colors.border} transition-all duration-300 ${isOpen ? "shadow-2xl scale-105" : "hover:scale-105 hover:shadow-xl"}`}>
+                <div className={`bg-white dark:bg-gray-900 rounded-2xl shadow-lg border ${colors.border} transition-all duration-300 ${isOpen ? "shadow-2xl scale-105" : "hover:scale-105 hover:shadow-xl"}`}>
                   <button onClick={() => toggleDropdown(skill.id)} className="w-full flex items-center justify-between p-6 cursor-pointer focus:outline-none">
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{skill.icon}</span>
-                      <h3 className={`font-bold text-lg ${colors.header}`}>{skill.label}</h3>
+                      <h3 className={`font-bold text-lg ${colors.header}`}>{skillLabels[skill.id]}</h3>
                     </div>
                     <svg className={`w-5 h-5 transition-transform duration-300 ${colors.chevron} ${isOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
@@ -252,15 +260,16 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── SKILL SPOTLIGHT ───────────────────────────── */}
+      <SkillSpotlight />
+
       {/* ── PROJECTS ──────────────────────────────────── */}
       <section id="projects" className="flex flex-col items-center justify-center min-h-[70vh] gap-8 py-16 relative z-10 px-4">
         <Reveal direction="right">
           <div className="flex flex-col items-center gap-2 w-full">
             <h1 className="text-5xl font-extrabold text-center bg-gradient-to-r from-emerald-600 via-teal-500 to-green-500 bg-clip-text text-transparent">
-              Projects
+              {t.projects.heading}
             </h1>
-            
-
           </div>
         </Reveal>
 
@@ -271,10 +280,10 @@ export default function Home() {
             const delays  = [0, 150, 300]            as const;
             return (
               <Reveal key={idx} direction={dirs[idx % 3]} delay={delays[idx % 3]}>
-                <div className={`relative bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4 border transition-all duration-500 h-full
+                <div className={`relative bg-white dark:bg-gray-900 dark:text-gray-100 rounded-2xl shadow-lg p-6 flex flex-col gap-4 border transition-all duration-500 h-full
                   ${highlighted
                     ? "border-emerald-400 shadow-emerald-100 shadow-xl scale-[1.03]"
-                    : "border-gray-200"}
+                    : "border-gray-200 dark:border-gray-700"}
                   hover:scale-[1.05] hover:shadow-2xl`}
                 >
                   {highlighted && activeFilter && (
@@ -290,14 +299,14 @@ export default function Home() {
                     {project.title}
                   </h2>
 
-                  <p className="text-gray-600 text-sm leading-relaxed">{project.description}</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{project.description}</p>
 
                   <div className="flex flex-wrap gap-2 mt-1">
                     {project.tags.map((tag, i) => {
                       const active = activeFilter !== null && normalize(tag) === normalize(activeFilter ?? "");
                       return (
                         <span key={i} className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200
-                          ${active ? "bg-emerald-500 text-white ring-2 ring-emerald-300 scale-110" : "bg-emerald-50 text-emerald-800"}`}>
+                          ${active ? "bg-emerald-500 text-white ring-2 ring-emerald-300 scale-110" : "bg-emerald-50 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"}`}>
                           {tag}
                         </span>
                       );
@@ -308,19 +317,19 @@ export default function Home() {
                     {!project.hideViewProject && (
                       <a href={project.link} target="_blank" rel="noopener noreferrer"
                         className="px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-semibold shadow hover:scale-105 transition-transform duration-200">
-                        View Project
+                        {t.projects.viewProject}
                       </a>
                     )}
                     {project.git && (
                       <a href={project.git} target="_blank" rel="noopener noreferrer"
                         className="px-4 py-1.5 rounded-full bg-gray-800 text-white text-sm font-semibold shadow hover:scale-105 transition-transform duration-200">
-                        GitHub
+                        {t.projects.github}
                       </a>
                     )}
                     {project.download && (
                       <a href={project.download} target="_blank" rel="noopener noreferrer"
                         className="px-4 py-1.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white text-sm font-semibold shadow hover:scale-105 transition-transform duration-200">
-                        Play on itch.io
+                        {t.projects.play}
                       </a>
                     )}
                   </div>
@@ -334,17 +343,21 @@ export default function Home() {
       {/* ── CONTACT ───────────────────────────────────── */}
       <section id="contact" className="flex flex-col items-center justify-center min-h-[40vh] gap-8 py-16 relative z-10 px-4">
         <Reveal direction="left">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Where to find me</h1>
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">{t.contact.heading}</h1>
         </Reveal>
         <Reveal direction="up" delay={200}>
-          <div className="flex gap-6">
+          <div className="flex gap-6 flex-wrap justify-center">
             <a href="https://github.com/natibirhauz" target="_blank" rel="noopener noreferrer"
               className="px-6 py-2 rounded-full bg-gradient-to-r from-gray-800 to-emerald-700 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-300">
-              GitHub
+              {t.nav.github}
             </a>
             <a href="https://www.linkedin.com/in/nati-birhauz-296724159/" target="_blank" rel="noopener noreferrer"
               className="px-6 py-2 rounded-full bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-300">
-              LinkedIn
+              {t.nav.linkedin}
+            </a>
+            <a href="mailto:nati4455@gmail.com"
+              className="px-6 py-2 rounded-full bg-gradient-to-r from-teal-500 to-green-500 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-300">
+              {t.contact.email}
             </a>
           </div>
         </Reveal>

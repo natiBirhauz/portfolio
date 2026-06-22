@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Heebo } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -15,6 +15,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const heebo = Heebo({
+  variable: "--font-heebo",
+  subsets: ["hebrew", "latin"],
+  weight: ["300", "400", "500", "700", "900"],
+});
+
 export const metadata: Metadata = {
   title: "Nati Birhauz | Portfolio",
   description: "my portfolio",
@@ -28,12 +34,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen scroll-smooth`}
+        className={`${geistSans.variable} ${geistMono.variable} ${heebo.variable} antialiased min-h-screen scroll-smooth`}
       >
         <ThemeProvider>
           <LangProvider>
             <Navbar />
-            <div className="pt-16 px-2 sm:px-0 w-full">
+            {/* pl-16 offsets content for the side navbar */}
+            <div className="pl-16 w-full">
               {children}
             </div>
           </LangProvider>

@@ -145,18 +145,18 @@ export default function Home() {
         </Reveal>
 
         <Reveal direction="up" delay={150}>
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-emerald-600 via-teal-500 to-green-500 bg-clip-text text-transparent">
+          <h1 className="text-7xl font-extrabold bg-gradient-to-r from-emerald-600 via-teal-500 to-green-500 bg-clip-text text-transparent">
             {t.hero.title}
           </h1>
         </Reveal>
 
         <Reveal direction="up" delay={300}>
-          <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-300">
+          <h2 className="text-3xl font-bold animate-color-cycle">
             {t.hero.subtitle}
           </h2>
         </Reveal>
 
-        <div className="relative w-full max-w-2xl mx-auto animate-scale-in" style={{ animationDelay: "0.3s" }}>
+        <div className="relative w-full max-w-3xl mx-auto animate-scale-in" style={{ animationDelay: "0.3s" }}>
 
           {/* animated shimmer border ring */}
           <div
@@ -168,7 +168,7 @@ export default function Home() {
           />
 
           {/* card body */}
-          <div className="relative rounded-3xl bg-gray-50/95 dark:bg-[#0a2318]/90 backdrop-blur-md px-12 py-10 shadow-2xl z-10 flex flex-col gap-6 text-start overflow-hidden">
+          <div className="relative rounded-3xl bg-[#C9FAC6]/95 dark:bg-[#0a2318]/90 backdrop-blur-md px-14 py-12 shadow-2xl z-10 flex flex-col gap-6 text-center overflow-hidden">
 
             {/* top accent bar */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 rounded-t-3xl" />
@@ -230,7 +230,7 @@ export default function Home() {
             const colors = colorMap[skill.color];
             return (
               <Reveal key={skill.id} direction={skillDirections[i]} delay={i === 1 ? 200 : 0}>
-                <div className={`bg-gray-50 dark:bg-[#0a2318] rounded-2xl shadow-lg border ${colors.border} transition-all duration-300 ${isOpen ? "shadow-2xl scale-105" : "hover:scale-105 hover:shadow-xl"}`}>
+                <div className={`bg-[#C9FAC6] dark:bg-[#0a2318] rounded-2xl shadow-lg border ${colors.border} transition-all duration-300 ${isOpen ? "shadow-2xl scale-105" : "hover:scale-105 hover:shadow-xl"}`}>
                   <button onClick={() => toggleDropdown(skill.id)} className="w-full flex items-center justify-between p-6 cursor-pointer focus:outline-none">
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{skill.icon}</span>
@@ -279,7 +279,7 @@ export default function Home() {
             const delays  = [0, 150, 300]            as const;
             return (
               <Reveal key={idx} direction={dirs[idx % 3]} delay={delays[idx % 3]}>
-                <div className={`relative bg-gray-50 dark:bg-[#0a2318] dark:text-gray-100 rounded-2xl shadow-lg p-6 flex flex-col gap-4 border transition-all duration-500 h-full
+                <div className={`relative bg-[#C9FAC6] dark:bg-[#0a2318] dark:text-gray-100 rounded-2xl shadow-lg p-6 flex flex-col gap-4 border transition-all duration-500 h-full
                   ${highlighted
                     ? "border-emerald-400 shadow-emerald-100 shadow-xl scale-[1.03]"
                     : "border-gray-200 dark:border-gray-700"}

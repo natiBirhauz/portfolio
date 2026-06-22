@@ -20,20 +20,57 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={`w-full flex justify-between items-center px-6 py-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-emerald-200 dark:border-emerald-900 shadow-sm fixed top-0 left-0 z-50 transition-transform duration-300 ease-in-out ${visible ? "translate-y-0" : "-translate-y-full"}`}>
-      <ul className="flex gap-5 text-sm font-medium text-gray-700 dark:text-gray-200">
-        <li><a href="#about" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{t.nav.about}</a></li>
-        <li><a href="#skills-section" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{t.nav.skills}</a></li>
-        <li><a href="#projects" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{t.nav.projects}</a></li>
-        <li><a href="#contact" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{t.nav.contact}</a></li>
-        <li><a href="https://github.com/natibirhauz" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{t.nav.github}</a></li>
-        <li><a href="https://www.linkedin.com/in/nati-birhauz-296724159/" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{t.nav.linkedin}</a></li>
+    <nav
+      className={`
+        fixed top-0 left-0 h-full w-16 z-50 flex flex-col items-center justify-between py-6
+        bg-white/80 dark:bg-[#061410]/80 backdrop-blur
+        border-r border-emerald-200 dark:border-emerald-900 shadow-sm
+        transition-transform duration-300 ease-in-out
+        ${visible ? "translate-x-0" : "-translate-x-full"}
+      `}
+    >
+      {/* Nav links — icons + tooltips */}
+      <ul className="flex flex-col gap-5 items-center">
+        {[
+          { href: "#about",         label: t.nav.about,    icon: "👤" },
+          { href: "#skills-section",label: t.nav.skills,   icon: "🧠" },
+          { href: "#projects",      label: t.nav.projects, icon: "📁" },
+          { href: "#contact",       label: t.nav.contact,  icon: "✉️" },
+          { href: "https://github.com/natibirhauz", label: t.nav.github, icon: "🐙", external: true },
+          { href: "https://www.linkedin.com/in/nati-birhauz-296724159/", label: t.nav.linkedin, icon: "💼", external: true },
+        ].map(({ href, label, icon, external }) => (
+          <li key={href}>
+            <a
+              href={href}
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
+              title={label}
+              className="group relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors"
+            >
+              <span className="text-xl">{icon}</span>
+              {/* tooltip */}
+              <span className="absolute left-14 px-2 py-1 rounded-md bg-gray-800 text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                {label}
+              </span>
+            </a>
+          </li>
+        ))}
       </ul>
-      <div className="flex gap-3 items-center">
-        <button onClick={toggleLang} className="px-3 py-1 rounded-full text-xs font-bold border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900 transition-colors">
+
+      {/* Bottom controls */}
+      <div className="flex flex-col gap-3 items-center">
+        <button
+          onClick={toggleLang}
+          title={lang === "en" ? "עברית" : "English"}
+          className="w-10 h-10 rounded-xl text-xs font-bold border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors"
+        >
           {lang === "en" ? "HE" : "EN"}
         </button>
-        <button onClick={toggleTheme} aria-label="Toggle dark mode" className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-lg">
+        <button
+          onClick={toggleTheme}
+          aria-label="Toggle dark mode"
+          className="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-lg"
+        >
           {theme === "dark" ? "☀️" : "🌙"}
         </button>
       </div>

@@ -43,6 +43,10 @@ export default function NBLogo({ scrollRange = 1600 }: { scrollRange?: number })
         preload="auto"
         aria-hidden="true"
         className="fixed inset-0 w-full h-full object-contain z-0 pointer-events-none"
+        style={{
+          maskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
+        }}
       />
 
       {/* Emerald/teal tint overlay — multiply blends with the video:

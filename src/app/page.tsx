@@ -150,14 +150,62 @@ export default function Home() {
           </h2>
         </Reveal>
 
-        <Reveal direction="left" delay={300}>
-          <p className="max-w-xl text-lg text-gray-600">
-            Hi!<br /><br />
-            Welcome to my portfolio where you can see my projects!<br />
-            My main focus is on AI and networks.<br />
-            I&apos;ve been a software engineer since I was 15 years old.<br />
-            M.Sc. in Software Engineering with a specialization in A.I.
-          </p>
+        <Reveal direction="up" delay={300}>
+          <div className="relative max-w-xl w-full mx-auto">
+            {/* glowing border accent */}
+            <div className="absolute -inset-0.5 rounded-3xl bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 opacity-40 blur-sm" />
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl px-8 py-7 shadow-xl flex flex-col gap-3 text-left border border-emerald-100">
+
+              {/* greeting line */}
+              <Reveal direction="down" delay={150}>
+                <p className="text-2xl font-bold bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
+                  👋 Hi, I&apos;m Nati!
+                </p>
+              </Reveal>
+
+              {/* divider */}
+              <Reveal direction="fade" delay={300}>
+                <div className="h-px bg-gradient-to-r from-emerald-200 via-teal-300 to-transparent" />
+              </Reveal>
+
+              {/* lines staggered */}
+              <Reveal direction="left" delay={300}>
+                <p className="text-gray-700 text-base leading-relaxed">
+                  Welcome to my portfolio — a place where code meets creativity.
+                </p>
+              </Reveal>
+
+              <Reveal direction="left" delay={400}>
+                <p className="text-gray-700 text-base leading-relaxed">
+                  🧠 My main focus is <span className="font-semibold text-emerald-600">AI</span> and <span className="font-semibold text-teal-600">networks</span>.
+                </p>
+              </Reveal>
+
+              <Reveal direction="left" delay={500}>
+                <p className="text-gray-700 text-base leading-relaxed">
+                  💻 I&apos;ve been building software since I was <span className="font-semibold text-emerald-600">15 years old</span>.
+                </p>
+              </Reveal>
+
+              <Reveal direction="left" delay={600}>
+                <p className="text-gray-700 text-base leading-relaxed">
+                  🎓 <span className="font-semibold text-teal-600">M.Sc. Software Engineering</span> — specialization in A.I.
+                </p>
+              </Reveal>
+
+              {/* bottom accent */}
+              <Reveal direction="up" delay={700}>
+                <div className="flex gap-2 mt-1 flex-wrap">
+                  {["AI/ML", "Networks", "Full Stack", "Game Dev"].map((tag) => (
+                    <span key={tag} className="px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 border border-emerald-200">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </Reveal>
+
+            </div>
+          </div>
         </Reveal>
 
         {/* Skill cards */}

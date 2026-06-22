@@ -25,7 +25,9 @@ const delayMap: Record<number, string> = {
   150: "delay-150",
   200: "delay-200",
   300: "delay-300",
+  400: "delay-[400ms]",
   500: "delay-500",
+  600: "delay-[600ms]",
   700: "delay-700",
 };
 

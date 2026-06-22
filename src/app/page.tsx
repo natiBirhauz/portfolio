@@ -150,63 +150,71 @@ export default function Home() {
           </h2>
         </Reveal>
 
-        <Reveal direction="up" delay={300}>
-          <div className="relative max-w-xl w-full mx-auto">
-            {/* glowing border accent */}
-            <div className="absolute -inset-0.5 rounded-3xl bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 opacity-40 blur-sm" />
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl px-8 py-7 shadow-xl flex flex-col gap-3 text-left border border-emerald-100">
+        <div className="relative w-full max-w-2xl mx-auto animate-scale-in" style={{ animationDelay: "0.3s" }}>
 
-              {/* greeting line */}
-              <Reveal direction="down" delay={150}>
-                <p className="text-2xl font-bold bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
-                  👋 Hi, I&apos;m Nati!
-                </p>
-              </Reveal>
+          {/* animated shimmer border ring */}
+          <div
+            className="absolute -inset-[2px] rounded-3xl animate-shimmer-border pointer-events-none"
+            style={{
+              background: "linear-gradient(120deg, #6ee7b7, #2dd4bf, #34d399, #059669, #6ee7b7)",
+              zIndex: 0,
+            }}
+          />
 
-              {/* divider */}
-              <Reveal direction="fade" delay={300}>
-                <div className="h-px bg-gradient-to-r from-emerald-200 via-teal-300 to-transparent" />
-              </Reveal>
+          {/* card body */}
+          <div className="relative rounded-3xl bg-white/90 backdrop-blur-md px-12 py-10 shadow-2xl z-10 flex flex-col gap-6 text-left overflow-hidden">
 
-              {/* lines staggered */}
-              <Reveal direction="left" delay={300}>
-                <p className="text-gray-700 text-base leading-relaxed">
-                  Welcome to my portfolio — a place where code meets creativity.
-                </p>
-              </Reveal>
+            {/* top accent bar */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 rounded-t-3xl" />
 
-              <Reveal direction="left" delay={400}>
-                <p className="text-gray-700 text-base leading-relaxed">
-                  🧠 My main focus is <span className="font-semibold text-emerald-600">AI</span> and <span className="font-semibold text-teal-600">networks</span>.
-                </p>
-              </Reveal>
+            {/* greeting */}
+            <p
+              className="animate-blur-up text-4xl font-black bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 bg-clip-text text-transparent tracking-tight"
+              style={{ animationDelay: "0.4s" }}
+            >
+              Hi, I&apos;m Nati!
+            </p>
 
-              <Reveal direction="left" delay={500}>
-                <p className="text-gray-700 text-base leading-relaxed">
-                  💻 I&apos;ve been building software since I was <span className="font-semibold text-emerald-600">15 years old</span>.
-                </p>
-              </Reveal>
+            {/* divider */}
+            <div
+              className="animate-blur-up h-px bg-gradient-to-r from-emerald-300 via-teal-200 to-transparent"
+              style={{ animationDelay: "0.55s" }}
+            />
 
-              <Reveal direction="left" delay={600}>
-                <p className="text-gray-700 text-base leading-relaxed">
-                  🎓 <span className="font-semibold text-teal-600">M.Sc. Software Engineering</span> — specialization in A.I.
-                </p>
-              </Reveal>
+            {/* lines */}
+            <p
+              className="animate-blur-up text-xl text-gray-700 leading-relaxed font-medium"
+              style={{ animationDelay: "0.65s" }}
+            >
+              Welcome to my portfolio — a place where code meets creativity.
+            </p>
 
-              {/* bottom accent */}
-              <Reveal direction="up" delay={700}>
-                <div className="flex gap-2 mt-1 flex-wrap">
-                  {["AI/ML", "Networks", "Full Stack", "Game Dev"].map((tag) => (
-                    <span key={tag} className="px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 border border-emerald-200">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </Reveal>
+            <p
+              className="animate-blur-up text-xl text-gray-700 leading-relaxed"
+              style={{ animationDelay: "0.8s" }}
+            >
+              My main focus is{" "}
+              <span className="font-bold text-emerald-600">AI</span> and{" "}
+              <span className="font-bold text-teal-600">networks</span>.
+            </p>
 
-            </div>
+            <p
+              className="animate-blur-up text-xl text-gray-700 leading-relaxed"
+              style={{ animationDelay: "0.95s" }}
+            >
+              I&apos;ve been building software since I was{" "}
+              <span className="font-bold text-emerald-600">15 years old</span>.
+            </p>
+
+            <p
+              className="animate-blur-up text-xl text-gray-700 leading-relaxed"
+              style={{ animationDelay: "1.1s" }}
+            >
+              <span className="font-bold text-teal-600">M.Sc. Software Engineering</span> — specialization in A.I.
+            </p>
+
           </div>
-        </Reveal>
+        </div>
 
         {/* Skill cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mt-4 items-start">

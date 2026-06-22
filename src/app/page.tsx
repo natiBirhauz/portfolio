@@ -127,7 +127,7 @@ export default function Home() {
       <NBLogo scrollRange={1600} />
 
       {/* overlay so content is readable over the video */}
-      <div className="fixed inset-0 z-[2] bg-[#f0fdf8]/70 dark:bg-gray-950/70 pointer-events-none" />
+      <div className="fixed inset-0 z-[2] bg-white/40 dark:bg-[#020d08]/75 pointer-events-none" />
 
       {/* ── ABOUT ─────────────────────────────────────── */}
       <section id="about" className="flex flex-col items-center justify-center min-h-[90vh] gap-10 text-center relative z-10 mt-16 px-4">
@@ -169,7 +169,7 @@ export default function Home() {
           />
 
           {/* card body */}
-          <div className="relative rounded-3xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-md px-12 py-10 shadow-2xl z-10 flex flex-col gap-6 text-start overflow-hidden">
+          <div className="relative rounded-3xl bg-white/90 dark:bg-[#0a2318]/90 backdrop-blur-md px-12 py-10 shadow-2xl z-10 flex flex-col gap-6 text-start overflow-hidden">
 
             {/* top accent bar */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 rounded-t-3xl" />
@@ -231,7 +231,7 @@ export default function Home() {
             const colors = colorMap[skill.color];
             return (
               <Reveal key={skill.id} direction={skillDirections[i]} delay={i === 1 ? 200 : 0}>
-                <div className={`bg-white dark:bg-gray-900 rounded-2xl shadow-lg border ${colors.border} transition-all duration-300 ${isOpen ? "shadow-2xl scale-105" : "hover:scale-105 hover:shadow-xl"}`}>
+                <div className={`bg-white dark:bg-[#0a2318] rounded-2xl shadow-lg border ${colors.border} transition-all duration-300 ${isOpen ? "shadow-2xl scale-105" : "hover:scale-105 hover:shadow-xl"}`}>
                   <button onClick={() => toggleDropdown(skill.id)} className="w-full flex items-center justify-between p-6 cursor-pointer focus:outline-none">
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{skill.icon}</span>
@@ -280,7 +280,7 @@ export default function Home() {
             const delays  = [0, 150, 300]            as const;
             return (
               <Reveal key={idx} direction={dirs[idx % 3]} delay={delays[idx % 3]}>
-                <div className={`relative bg-white dark:bg-gray-900 dark:text-gray-100 rounded-2xl shadow-lg p-6 flex flex-col gap-4 border transition-all duration-500 h-full
+                <div className={`relative bg-white dark:bg-[#0a2318] dark:text-gray-100 rounded-2xl shadow-lg p-6 flex flex-col gap-4 border transition-all duration-500 h-full
                   ${highlighted
                     ? "border-emerald-400 shadow-emerald-100 shadow-xl scale-[1.03]"
                     : "border-gray-200 dark:border-gray-700"}

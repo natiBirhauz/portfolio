@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f0fdf8;
+  --background: #ffffff;
   --foreground: #171717;
 }
 
@@ -16,9 +16,10 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Dark mode: deep green-dark tone */
 .dark {
-  --background: #030712;
-  --foreground: #f9fafb;
+  --background: #020d08;
+  --foreground: #e8faf2;
 }
 
 html, body {

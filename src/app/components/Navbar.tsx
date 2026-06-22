@@ -19,59 +19,66 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const links = [
+    { href: "#about",          label: t.nav.about,    external: false },
+    { href: "#skills-section", label: t.nav.skills,   external: false },
+    { href: "#projects",       label: t.nav.projects, external: false },
+    { href: "#contact",        label: t.nav.contact,  external: false },
+    { href: "https://github.com/natibirhauz",                              label: t.nav.github,   external: true },
+    { href: "https://www.linkedin.com/in/nati-birhauz-296724159/",         label: t.nav.linkedin, external: true },
+  ];
+
   return (
     <nav
       className={`
-        fixed top-0 left-0 h-full w-16 z-50 flex flex-col items-center justify-between py-6
-        bg-white/80 dark:bg-[#061410]/80 backdrop-blur
-        border-r border-emerald-200 dark:border-emerald-900 shadow-sm
+        fixed top-0 right-0 h-full w-20 z-50
+        flex flex-col items-center justify-between py-6
+        bg-[#C9FAC6]/90 dark:bg-[#061410]/90 backdrop-blur
+        border-l border-emerald-300 dark:border-emerald-900 shadow-sm
         transition-transform duration-300 ease-in-out
-        ${visible ? "translate-x-0" : "-translate-x-full"}
+        ${visible ? "translate-x-0" : "translate-x-full"}
       `}
     >
-      {/* Nav links — icons + tooltips */}
-      <ul className="flex flex-col gap-5 items-center">
-        {[
-          { href: "#about",         label: t.nav.about,    icon: "👤" },
-          { href: "#skills-section",label: t.nav.skills,   icon: "🧠" },
-          { href: "#projects",      label: t.nav.projects, icon: "📁" },
-          { href: "#contact",       label: t.nav.contact,  icon: "✉️" },
-          { href: "https://github.com/natibirhauz", label: t.nav.github, icon: "🐙", external: true },
-          { href: "https://www.linkedin.com/in/nati-birhauz-296724159/", label: t.nav.linkedin, icon: "💼", external: true },
-        ].map(({ href, label, icon, external }) => (
-          <li key={href}>
+      {/* Nav links — short text labels */}
+      <ul className="flex flex-col gap-2 items-center w-full px-1">
+        {links.map(({ href, label, external }) => (
+          <li key={href} className="w-full">
             <a
               href={href}
               target={external ? "_blank" : undefined}
               rel={external ? "noopener noreferrer" : undefined}
-              title={label}
-              className="group relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors"
+              className="block w-full text-center text-[11px] font-semibold py-2 px-1 rounded-xl
+                text-emerald-800 dark:text-emerald-300
+                hover:bg-emerald-200 dark:hover:bg-emerald-900
+                transition-colors leading-tight break-words"
             >
-              <span className="text-xl">{icon}</span>
-              {/* tooltip */}
-              <span className="absolute left-14 px-2 py-1 rounded-md bg-gray-800 text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                {label}
-              </span>
+              {label}
             </a>
           </li>
         ))}
       </ul>
 
       {/* Bottom controls */}
-      <div className="flex flex-col gap-3 items-center">
+      <div className="flex flex-col gap-2 items-center w-full px-1">
         <button
           onClick={toggleLang}
           title={lang === "en" ? "עברית" : "English"}
-          className="w-10 h-10 rounded-xl text-xs font-bold border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors"
+          className="w-full py-2 rounded-xl text-[11px] font-bold
+            border border-emerald-400 dark:border-emerald-700
+            text-emerald-800 dark:text-emerald-300
+            hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-colors"
         >
           {lang === "en" ? "HE" : "EN"}
         </button>
         <button
           onClick={toggleTheme}
           aria-label="Toggle dark mode"
-          className="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-lg"
+          className="w-full py-2 rounded-xl text-[11px] font-semibold
+            border border-gray-300 dark:border-gray-700
+            text-gray-700 dark:text-gray-300
+            hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
         >
-          {theme === "dark" ? "☀️" : "🌙"}
+          {theme === "dark" ? "Light" : "Dark"}
         </button>
       </div>
     </nav>

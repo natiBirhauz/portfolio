@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 /**
  * Full-screen background video that scrubs with scroll.
- * Edges fade top/bottom so it blends into the page background.
+ * Uses object-contain so it stays sharp, wrapper bg fills letterbox areas.
  */
 export default function NBLogo({ scrollRange = 1600 }: { scrollRange?: number }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -40,11 +40,11 @@ export default function NBLogo({ scrollRange = 1600 }: { scrollRange?: number })
       playsInline
       preload="auto"
       aria-hidden="true"
-      className="fixed inset-0 w-full h-full object-cover z-0 pointer-events-none"
+      className="fixed inset-0 w-full h-full object-contain z-0 pointer-events-none"
       style={{
-        maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
-        WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
-        opacity: 0.22,
+        opacity: 0.3,
+        maskImage: "linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)",
       }}
     />
   );

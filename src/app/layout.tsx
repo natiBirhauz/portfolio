@@ -39,8 +39,8 @@ export default function RootLayout({
         <ThemeProvider>
           <LangProvider>
             <Navbar />
-            {/* pl-16 offsets content for the side navbar */}
-            <div className="pl-16 w-full">
+            {/* pr-20 offsets content for the right side navbar */}
+            <div className="pr-20 w-full">
               {children}
             </div>
           </LangProvider>

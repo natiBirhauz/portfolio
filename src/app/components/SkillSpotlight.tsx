@@ -30,8 +30,8 @@ export default function SkillSpotlight() {
         <h2 className="text-5xl font-extrabold bg-gradient-to-r from-emerald-600 via-teal-500 to-green-500 bg-clip-text text-transparent mb-6">
           {t.skillsSection.heading}
         </h2>
-        <div className="inline-block rounded-2xl bg-white/80 dark:bg-[#0a2318]/80 backdrop-blur px-8 py-4 shadow-md border border-emerald-100 dark:border-emerald-900">
-          <p className="text-lg text-gray-700 dark:text-gray-200 leading-relaxed">
+        <div className="box-card inline-block rounded-2xl backdrop-blur px-8 py-4 shadow-md border border-emerald-200 dark:border-emerald-800">
+          <p className="text-lg leading-relaxed">
             {t.skillsSection.intro}
           </p>
         </div>
@@ -58,7 +58,7 @@ export default function SkillSpotlight() {
             >
               {/* Card — full viewport width, edges faded via mask */}
               <div
-                className="w-full bg-white/85 dark:bg-[#0a2318]/85 backdrop-blur-md py-12 px-16 text-center shadow-2xl relative overflow-hidden"
+                className="box-card w-full backdrop-blur-md py-12 px-16 text-center shadow-2xl relative overflow-hidden"
                 style={{
                   maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
                   WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
@@ -76,7 +76,7 @@ export default function SkillSpotlight() {
                   {item.title}
                 </h3>
 
-                <p className="text-xl text-gray-700 dark:text-gray-200 leading-relaxed max-w-3xl mx-auto">
+                <p className="text-xl leading-relaxed max-w-3xl mx-auto opacity-80">
                   {item.body}
                 </p>
               </div>

@@ -41,3 +41,5 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+ffmpeg-8.1.1-essentials_build/  
+ffmpeg-8.1.2.tar.xz  

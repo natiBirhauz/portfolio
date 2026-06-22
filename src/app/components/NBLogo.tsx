@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
  * Full-screen background video that scrubs with scroll.
  * scrollRange: px of scroll = full animation (forward on scroll down, backward on scroll up).
  */
-export default function NBLogo({ scrollRange = 800 }: { scrollRange?: number }) {
+export default function NBLogo({ scrollRange = 1600 }: { scrollRange?: number }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {

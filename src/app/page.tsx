@@ -117,7 +117,7 @@ export default function Home() {
     <div className="relative overflow-x-clip min-h-screen w-full">
 
       {/* ── BACKGROUND ANIMATION ──────────────────────── */}
-      <NBLogo scrollRange={800} />
+      <NBLogo scrollRange={1600} />
 
       {/* overlay so content is readable over the video */}
       <div className="fixed inset-0 z-[2] bg-white/60 pointer-events-none" />

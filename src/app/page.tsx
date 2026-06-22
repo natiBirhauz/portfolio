@@ -168,7 +168,7 @@ export default function Home() {
           />
 
           <div className="relative rounded-3xl dark:bg-[#0a2318] backdrop-blur-md px-14 py-12 shadow-2xl z-10 flex flex-col gap-6 text-center overflow-hidden"
-            style={{ backgroundColor: "#C9FAC6" }}
+            style={{ backgroundColor: "#F0FFF8" }}
           >
 
             {/* top accent bar */}
@@ -190,7 +190,7 @@ export default function Home() {
 
             {/* lines */}
             <p
-              className="animate-blur-up text-xl text-gray-700 dark:text-gray-300 leading-relaxed font-medium"
+              className="animate-blur-up text-xl text-gray-800 dark:text-gray-300 leading-relaxed font-medium"
               style={{ animationDelay: "0.65s" }}
             >
               {t.bio.line1}
@@ -233,7 +233,7 @@ export default function Home() {
               <Reveal key={skill.id} direction={skillDirections[i]} delay={i === 1 ? 200 : 0}>
                 <div
                   className={`dark:bg-[#0a2318] rounded-2xl shadow-lg border ${colors.border} transition-all duration-300 ${isOpen ? "shadow-2xl scale-105" : "hover:scale-105 hover:shadow-xl"}`}
-                  style={{ backgroundColor: "#C9FAC6" }}
+                  style={{ backgroundColor: "#F0FFF8" }}
                 >
                   <button onClick={() => toggleDropdown(skill.id)} className="w-full flex items-center justify-between p-6 cursor-pointer focus:outline-none">
                     <div className="flex items-center gap-3">
@@ -289,7 +289,7 @@ export default function Home() {
                     ? "border-emerald-400 shadow-emerald-100 shadow-xl scale-[1.03]"
                     : "border-gray-200 dark:border-gray-700"}
                   hover:scale-[1.05] hover:shadow-2xl`}
-                  style={{ backgroundColor: "#C9FAC6" }}
+                  style={{ backgroundColor: "#F0FFF8" }}
                 >
                   {highlighted && activeFilter && (
                     <span className="absolute inset-0 rounded-2xl ring-2 ring-emerald-400 pointer-events-none" />

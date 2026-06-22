@@ -3,8 +3,9 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Full-screen background video that scrubs with scroll.
- * Uses object-contain so it stays sharp, wrapper bg fills letterbox areas.
+ * Full-screen background video scrubbed by scroll.
+ * In light mode: white bg + cyan-green tint overlay on top.
+ * Edges fade into background via mask.
  */
 export default function NBLogo({ scrollRange = 1600 }: { scrollRange?: number }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -12,7 +13,6 @@ export default function NBLogo({ scrollRange = 1600 }: { scrollRange?: number })
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-
     video.pause();
     video.currentTime = 0;
 
@@ -25,27 +25,38 @@ export default function NBLogo({ scrollRange = 1600 }: { scrollRange?: number })
 
     video.addEventListener("loadedmetadata", update);
     window.addEventListener("scroll", update, { passive: true });
-
     return () => {
       video.removeEventListener("loadedmetadata", update);
       window.removeEventListener("scroll", update);
     };
   }, [scrollRange]);
 
+  const edgeMask = "linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)";
+
   return (
-    <video
-      ref={videoRef}
-      src="/nb-animation.webm"
-      muted
-      playsInline
-      preload="auto"
-      aria-hidden="true"
-      className="fixed inset-0 w-full h-full object-contain z-0 pointer-events-none"
-      style={{
-        opacity: 0.3,
-        maskImage: "linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)",
-        WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)",
-      }}
-    />
+    <>
+      {/* Video — sharp, contained, edges fade */}
+      <video
+        ref={videoRef}
+        src="/nb-animation.webm"
+        muted playsInline preload="auto" aria-hidden="true"
+        className="fixed inset-0 w-full h-full object-contain z-0 pointer-events-none"
+        style={{
+          opacity: 0.35,
+          maskImage: edgeMask,
+          WebkitMaskImage: edgeMask,
+        }}
+      />
+
+      {/* Bright green-cyan tint — screen blend so it lightens/tints without darkening.
+          Only visible in light mode (dark mode the bg is already dark green). */}
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 z-[1] pointer-events-none dark:hidden"
+        style={{
+          background: "linear-gradient(160deg, rgba(110,231,183,0.18) 0%, rgba(34,211,238,0.14) 50%, rgba(52,211,153,0.18) 100%)",
+        }}
+      />
+    </>
   );
 }

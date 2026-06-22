@@ -82,7 +82,15 @@ html, body {
   animation: scale-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* ── Hebrew font ─────────────────────────────────────── */
+/* ── Theme-aware box colors ──────────────────────────── */
+.box-card {
+  background-color: #F0FFF8;
+  color: #1f2937;
+}
+.dark .box-card {
+  background-color: #0d2b1e;
+  color: #e8faf2;
+}
 [lang="he"], [lang="he"] * {
   font-family: var(--font-heebo), sans-serif;
 }

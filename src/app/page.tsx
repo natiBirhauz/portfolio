@@ -167,9 +167,7 @@ export default function Home() {
             }}
           />
 
-          <div className="relative rounded-3xl dark:bg-[#0a2318] backdrop-blur-md px-14 py-12 shadow-2xl z-10 flex flex-col gap-6 text-center overflow-hidden"
-            style={{ backgroundColor: "#F0FFF8" }}
-          >
+          <div className="box-card relative rounded-3xl backdrop-blur-md px-14 py-12 shadow-2xl z-10 flex flex-col gap-6 text-center overflow-hidden">
 
             {/* top accent bar */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 rounded-t-3xl" />
@@ -189,35 +187,22 @@ export default function Home() {
             />
 
             {/* lines */}
-            <p
-              className="animate-blur-up text-xl text-gray-800 dark:text-gray-300 leading-relaxed font-medium"
-              style={{ animationDelay: "0.65s" }}
-            >
+            <p className="animate-blur-up text-xl leading-relaxed font-medium dark:text-gray-300" style={{ animationDelay: "0.65s" }}>
               {t.bio.line1}
             </p>
-
-            <p
-              className="animate-blur-up text-xl text-gray-700 dark:text-gray-300 leading-relaxed"
-              style={{ animationDelay: "0.8s" }}
-            >
+            <p className="animate-blur-up text-xl leading-relaxed dark:text-gray-300" style={{ animationDelay: "0.8s" }}>
               {t.bio.line2a}{" "}
               <span className="font-bold text-emerald-600">{t.bio.line2b}</span>{" "}
               {t.bio.line2c}{" "}
               <span className="font-bold text-teal-600">{t.bio.line2d}</span>.
             </p>
 
-            <p
-              className="animate-blur-up text-xl text-gray-700 dark:text-gray-300 leading-relaxed"
-              style={{ animationDelay: "0.95s" }}
-            >
+            <p className="animate-blur-up text-xl leading-relaxed dark:text-gray-300" style={{ animationDelay: "0.95s" }}>
               {t.bio.line3a}{" "}
               <span className="font-bold text-emerald-600">{t.bio.line3b}</span>.
             </p>
 
-            <p
-              className="animate-blur-up text-xl text-gray-700 dark:text-gray-300 leading-relaxed"
-              style={{ animationDelay: "1.1s" }}
-            >
+            <p className="animate-blur-up text-xl leading-relaxed dark:text-gray-300" style={{ animationDelay: "1.1s" }}>
               <span className="font-bold text-teal-600">{t.bio.line4a}</span>{t.bio.line4b}
             </p>
 
@@ -232,8 +217,7 @@ export default function Home() {
             return (
               <Reveal key={skill.id} direction={skillDirections[i]} delay={i === 1 ? 200 : 0}>
                 <div
-                  className={`dark:bg-[#0a2318] rounded-2xl shadow-lg border ${colors.border} transition-all duration-300 ${isOpen ? "shadow-2xl scale-105" : "hover:scale-105 hover:shadow-xl"}`}
-                  style={{ backgroundColor: "#F0FFF8" }}
+                  className={`box-card rounded-2xl shadow-lg border ${colors.border} transition-all duration-300 ${isOpen ? "shadow-2xl scale-105" : "hover:scale-105 hover:shadow-xl"}`}
                 >
                   <button onClick={() => toggleDropdown(skill.id)} className="w-full flex items-center justify-between p-6 cursor-pointer focus:outline-none">
                     <div className="flex items-center gap-3">
@@ -284,12 +268,9 @@ export default function Home() {
             return (
               <Reveal key={idx} direction={dirs[idx % 3]} delay={delays[idx % 3]}>
                 <div
-                  className={`relative dark:bg-[#0a2318] dark:text-gray-100 rounded-2xl shadow-lg p-6 flex flex-col gap-4 border transition-all duration-500 h-full
-                  ${highlighted
-                    ? "border-emerald-400 shadow-emerald-100 shadow-xl scale-[1.03]"
-                    : "border-gray-200 dark:border-gray-700"}
+                  className={`box-card relative rounded-2xl shadow-lg p-6 flex flex-col gap-4 border transition-all duration-500 h-full
+                  ${highlighted ? "border-emerald-400 shadow-emerald-100 shadow-xl scale-[1.03]" : "border-gray-200 dark:border-gray-700"}
                   hover:scale-[1.05] hover:shadow-2xl`}
-                  style={{ backgroundColor: "#F0FFF8" }}
                 >
                   {highlighted && activeFilter && (
                     <span className="absolute inset-0 rounded-2xl ring-2 ring-emerald-400 pointer-events-none" />
@@ -304,7 +285,7 @@ export default function Home() {
                     {project.title}
                   </h2>
 
-                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{t.projectList[project.key].description}</p>
+                  <p className="text-sm leading-relaxed opacity-80">{t.projectList[project.key].description}</p>
 
                   <div className="flex flex-wrap gap-2 mt-1">
                     {project.tags.map((tag, i) => {

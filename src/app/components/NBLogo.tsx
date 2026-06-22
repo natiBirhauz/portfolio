@@ -31,7 +31,7 @@ export default function NBLogo({ scrollRange = 1600 }: { scrollRange?: number })
     };
   }, [scrollRange]);
 
-  const edgeMask = "linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)";
+  const edgeMask = "linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%)";
 
   return (
     <>

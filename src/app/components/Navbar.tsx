@@ -74,8 +74,7 @@ export default function Navbar() {
             backgroundPosition: "center",
           }}
         >
-          {/* semi-transparent label */}
-          <span className="absolute inset-0 flex items-center justify-center text-[10px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+          <span className="absolute inset-0 flex items-center justify-center text-[10px] font-black text-gray-900 drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]">
             {lang === "en" ? "HE" : "EN"}
           </span>
         </button>

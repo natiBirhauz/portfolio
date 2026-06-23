@@ -10,42 +10,6 @@ import { useLang } from "./context/LangContext";
 /* ─────────────────────────────────────────────────────────
    Static data
 ───────────────────────────────────────────────────────── */
-const SKILLS = [
-  {
-    id: "skills",
-    icon: "🧑‍💻",
-    colorClass: "from-emerald-500 to-teal-500",
-    borderClass: "border-emerald-300",
-    headerClass: "text-emerald-700",
-    badgeClass: "bg-emerald-100 text-emerald-800 hover:bg-emerald-200",
-    badgeActiveClass: "bg-emerald-500 text-white ring-2 ring-emerald-400 scale-110",
-    chevronClass: "text-emerald-500",
-    items: ["Programmer", "QA", "Network Engineer", "Project Manager", "AI/ML Engineer", "Game Developer"],
-  },
-  {
-    id: "tools",
-    icon: "🛠️",
-    colorClass: "from-violet-500 to-blue-500",
-    borderClass: "border-violet-300",
-    headerClass: "text-violet-700",
-    badgeClass: "bg-violet-100 text-violet-800 hover:bg-violet-200",
-    badgeActiveClass: "bg-violet-500 text-white ring-2 ring-violet-400 scale-110",
-    chevronClass: "text-violet-500",
-    items: ["TensorFlow", "PyTorch", "LangGraph", "Wireshark", "RF Analyzer", "Jira", "Git", "Firebase", "Unity", "WordPress", "Photoshop", "Vercel"],
-  },
-  {
-    id: "languages",
-    icon: "💻",
-    colorClass: "from-cyan-500 to-emerald-500",
-    borderClass: "border-cyan-300",
-    headerClass: "text-cyan-700",
-    badgeClass: "bg-cyan-100 text-cyan-800 hover:bg-cyan-200",
-    badgeActiveClass: "bg-cyan-500 text-white ring-2 ring-cyan-400 scale-110",
-    chevronClass: "text-cyan-500",
-    items: ["CUDA", "Java", "C", "C++", "C#", "Python", "JavaScript", "TypeScript", "HTML", "CSS", "Android"],
-  },
-] as const;
-
 const PROJECTS = [
   {
     key: 0,
@@ -89,7 +53,6 @@ const normalize = (s: string) => s.toLowerCase().trim();
 ───────────────────────────────────────────────────────── */
 export default function Home() {
   const { t } = useLang();
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   const skillLabels: Record<string, string> = {
@@ -97,9 +60,6 @@ export default function Home() {
     tools: t.skills.tools,
     languages: t.skills.languages,
   };
-
-  const toggleDropdown = (id: string) =>
-    setOpenDropdown(prev => prev === id ? null : id);
 
   const handleBadgeClick = (item: string) => {
     const next = activeFilter === item ? null : item;
@@ -149,7 +109,7 @@ export default function Home() {
         </Reveal>
 
         {/* Bio card */}
-        <Reveal direction="up" delay={400} className="w-full max-w-3xl">
+        <Reveal direction="up" delay={400} className="w-full max-w-4xl">
           <div className="relative animate-scale-in" style={{ animationDelay: "0.4s" }}>
             {/* shimmer border */}
             <div
@@ -186,55 +146,12 @@ export default function Home() {
           </div>
         </Reveal>
 
-        {/* Skill filter cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
-          {SKILLS.map((skill, i) => {
-            const isOpen = openDropdown === skill.id;
-            const dirs = ["left", "up", "right"] as const;
-            return (
-              <Reveal key={skill.id} direction={dirs[i]} delay={i === 1 ? 200 : 0}>
-                <div className={`box-card rounded-2xl shadow-lg border-2 ${skill.borderClass} transition-all duration-300 ${isOpen ? "shadow-2xl scale-105" : "hover:scale-105 hover:shadow-xl"}`}>
-                  <button
-                    onClick={() => toggleDropdown(skill.id)}
-                    className="w-full flex items-center justify-between p-6 cursor-pointer focus:outline-none"
-                    aria-expanded={isOpen}
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="text-3xl">{skill.icon}</span>
-                      <h3 className={`font-bold text-xl ${skill.headerClass}`}>{skillLabels[skill.id]}</h3>
-                    </div>
-                    <svg
-                      className={`w-6 h-6 transition-transform duration-300 ${skill.chevronClass} ${isOpen ? "rotate-180" : ""}`}
-                      fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-
-                  <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
-                    <div className="overflow-hidden">
-                      <div className="flex flex-wrap gap-2 px-6 pb-6">
-                        {skill.items.map(item => (
-                          <button
-                            key={item}
-                            onClick={() => handleBadgeClick(item)}
-                            className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 cursor-pointer select-none ${activeFilter === item ? skill.badgeActiveClass : skill.badgeClass}`}
-                          >
-                            {item}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ── WHAT I DO (carousel) ─────────────────────── */}
-      <SkillSpotlight />
+      {/* ── WHAT I DO (carousel + skill filter) ─────── */}
+      <SkillSpotlight
+        onBadgeClick={handleBadgeClick}
+        activeFilter={activeFilter}
+        skillLabels={skillLabels}
+      />
 
       {/* ── PROJECTS ─────────────────────────────────── */}
       <section id="projects" className="flex flex-col items-center gap-10 py-20 relative z-10 px-6">

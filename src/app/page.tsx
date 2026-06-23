@@ -34,23 +34,23 @@ const colorMap: Record<string, {
   badge: string; badgeActive: string; chevron: string;
 }> = {
   emerald: {
-    border:      "border-emerald-200 dark:border-emerald-800",
-    header:      "text-emerald-700 dark:text-emerald-400",
-    badge:       "bg-emerald-100 text-emerald-800 hover:bg-emerald-200 dark:bg-emerald-900 dark:text-emerald-200 dark:hover:bg-emerald-800",
+    border:      "border-emerald-200",
+    header:      "text-emerald-700",
+    badge:       "bg-emerald-100 text-emerald-800 hover:bg-emerald-200",
     badgeActive: "bg-emerald-500 text-white ring-2 ring-emerald-400 scale-110",
     chevron:     "text-emerald-400",
   },
   teal: {
-    border:      "border-teal-200 dark:border-teal-800",
-    header:      "text-teal-700 dark:text-teal-400",
-    badge:       "bg-teal-100 text-teal-800 hover:bg-teal-200 dark:bg-teal-900 dark:text-teal-200 dark:hover:bg-teal-800",
+    border:      "border-teal-200",
+    header:      "text-teal-700",
+    badge:       "bg-teal-100 text-teal-800 hover:bg-teal-200",
     badgeActive: "bg-teal-500 text-white ring-2 ring-teal-400 scale-110",
     chevron:     "text-teal-400",
   },
   green: {
-    border:      "border-green-200 dark:border-green-800",
-    header:      "text-green-700 dark:text-green-400",
-    badge:       "bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900 dark:text-green-200 dark:hover:bg-green-800",
+    border:      "border-green-200",
+    header:      "text-green-700",
+    badge:       "bg-green-100 text-green-800 hover:bg-green-200",
     badgeActive: "bg-green-500 text-white ring-2 ring-green-400 scale-110",
     chevron:     "text-green-400",
   },
@@ -151,7 +151,7 @@ export default function Home() {
         </Reveal>
 
         <Reveal direction="up" delay={300}>
-          <h2 className="text-3xl font-bold animate-color-cycle">
+          <h2 className="text-2xl font-semibold text-gray-700">
             {t.hero.subtitle}
           </h2>
         </Reveal>
@@ -187,22 +187,22 @@ export default function Home() {
             />
 
             {/* lines */}
-            <p className="animate-blur-up text-xl leading-relaxed font-medium dark:text-gray-300" style={{ animationDelay: "0.65s" }}>
+            <p className="animate-blur-up text-xl text-gray-700 leading-relaxed font-medium" style={{ animationDelay: "0.65s" }}>
               {t.bio.line1}
             </p>
-            <p className="animate-blur-up text-xl leading-relaxed dark:text-gray-300" style={{ animationDelay: "0.8s" }}>
+            <p className="animate-blur-up text-xl text-gray-700 leading-relaxed" style={{ animationDelay: "0.8s" }}>
               {t.bio.line2a}{" "}
               <span className="font-bold text-emerald-600">{t.bio.line2b}</span>{" "}
               {t.bio.line2c}{" "}
               <span className="font-bold text-teal-600">{t.bio.line2d}</span>.
             </p>
 
-            <p className="animate-blur-up text-xl leading-relaxed dark:text-gray-300" style={{ animationDelay: "0.95s" }}>
+            <p className="animate-blur-up text-xl text-gray-700 leading-relaxed" style={{ animationDelay: "0.95s" }}>
               {t.bio.line3a}{" "}
               <span className="font-bold text-emerald-600">{t.bio.line3b}</span>.
             </p>
 
-            <p className="animate-blur-up text-xl leading-relaxed dark:text-gray-300" style={{ animationDelay: "1.1s" }}>
+            <p className="animate-blur-up text-xl text-gray-700 leading-relaxed" style={{ animationDelay: "1.1s" }}>
               <span className="font-bold text-teal-600">{t.bio.line4a}</span>{t.bio.line4b}
             </p>
 
@@ -269,7 +269,7 @@ export default function Home() {
               <Reveal key={idx} direction={dirs[idx % 3]} delay={delays[idx % 3]}>
                 <div
                   className={`box-card relative rounded-2xl shadow-lg p-6 flex flex-col gap-4 border transition-all duration-500 h-full
-                  ${highlighted ? "border-emerald-400 shadow-emerald-100 shadow-xl scale-[1.03]" : "border-gray-200 dark:border-gray-700"}
+                  ${highlighted ? "border-emerald-400 shadow-emerald-100 shadow-xl scale-[1.03]" : "border-gray-200"}
                   hover:scale-[1.05] hover:shadow-2xl`}
                 >
                   {highlighted && activeFilter && (
@@ -292,7 +292,7 @@ export default function Home() {
                       const active = activeFilter !== null && normalize(tag) === normalize(activeFilter ?? "");
                       return (
                         <span key={i} className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200
-                          ${active ? "bg-emerald-500 text-white ring-2 ring-emerald-300 scale-110" : "bg-emerald-50 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"}`}>
+                          ${active ? "bg-emerald-500 text-white ring-2 ring-emerald-300 scale-110" : "bg-emerald-50 text-emerald-800"}`}>
                           {tag}
                         </span>
                       );
@@ -329,7 +329,7 @@ export default function Home() {
       {/* ── CONTACT ───────────────────────────────────── */}
       <section id="contact" className="flex flex-col items-center justify-center min-h-[40vh] gap-8 py-16 relative z-10 px-4">
         <Reveal direction="left">
-          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">{t.contact.heading}</h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">{t.contact.heading}</h1>
         </Reveal>
         <Reveal direction="up" delay={200}>
           <div className="flex gap-6 flex-wrap justify-center">

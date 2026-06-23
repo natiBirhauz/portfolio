@@ -30,7 +30,7 @@ export default function SkillSpotlight() {
         <h2 className="text-5xl font-extrabold bg-gradient-to-r from-emerald-600 via-teal-500 to-green-500 bg-clip-text text-transparent mb-6">
           {t.skillsSection.heading}
         </h2>
-        <div className="box-card inline-block rounded-2xl backdrop-blur px-8 py-4 shadow-md border border-emerald-200 dark:border-emerald-800">
+        <div className="box-card inline-block rounded-2xl backdrop-blur px-8 py-4 shadow-md border border-emerald-200">
           <p className="text-lg leading-relaxed">
             {t.skillsSection.intro}
           </p>

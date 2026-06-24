@@ -97,10 +97,11 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
     <section
       id="skills-section"
       ref={sectionRef}
-      className="relative z-10 min-h-screen md:min-h-[500vh]"
+      className="relative z-10"
+      style={{ minHeight: `calc(${n + 1} * 100vh)` }}
     >
       {/* sticky viewport */}
-      <div className="md:sticky top-0 md:h-screen relative flex flex-col justify-center gap-5 overflow-visible z-20">
+      <div className="sticky top-0 h-screen flex flex-col justify-center gap-5 overflow-visible z-20">
 
         {/* -- heading -- */}
         <div className="text-center px-8 shrink-0">

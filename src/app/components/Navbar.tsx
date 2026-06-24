@@ -19,6 +19,7 @@ export default function Navbar() {
 
   const links = [
     { href: "#about",          label: t.nav.about,    external: false },
+    { href: "#ai-agent",       label: t.nav.aiBot,   external: false },
     { href: "#skills-section", label: t.nav.skills,   external: false },
     { href: "#projects",       label: t.nav.projects, external: false },
     { href: "#contact",        label: t.nav.contact,  external: false },
@@ -27,7 +28,8 @@ export default function Navbar() {
   ];
 
   return (
-    <nav
+    <>
+      <nav
       className={`
         fixed z-50
         bg-white/90 backdrop-blur shadow-md
@@ -63,8 +65,8 @@ export default function Navbar() {
         ))}
       </ul>
 
-      {/* Language toggle — flag background */}
-      <div className="md:w-full md:px-2">
+      {/* Language toggle — flag background on desktop only */}
+      <div className="hidden md:block md:w-full md:px-2">
         <button
           onClick={toggleLang}
           title={lang === "en" ? "Switch to Hebrew" : "Switch to English"}
@@ -82,6 +84,27 @@ export default function Navbar() {
           </span>
         </button>
       </div>
-    </nav>
+      </nav>
+
+      {/* Mobile fixed language toggle */}
+      <div className="md:hidden fixed bottom-4 right-4 z-50">
+      <button
+        onClick={toggleLang}
+        title={lang === "en" ? "Switch to Hebrew" : "Switch to English"}
+        className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-emerald-300 shadow-lg bg-white/95 backdrop-blur hover:scale-105 transition-transform relative"
+        style={{
+          backgroundImage: `url(${lang === "en"
+            ? "https://flagcdn.com/w40/il.png"
+            : "https://flagcdn.com/w40/us.png"})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <span className="absolute inset-0 flex items-center justify-center text-sm font-black text-gray-900 drop-shadow-[0_1px_3px_rgba(255,255,255,1)]">
+          {lang === "en" ? "HE" : "EN"}
+        </span>
+      </button>
+      </div>
+    </>
   );
 }

@@ -5,7 +5,7 @@ type Lang = "en" | "he";
 type Translations = typeof en;
 
 const en = {
-  nav: { about: "About", projects: "Projects", skills: "Skills", contact: "Contact", github: "GitHub", linkedin: "LinkedIn" },
+  nav: { about: "About", aiBot: "Nati-Bot", skills: "Skills", projects: "Projects", contact: "Contact", github: "GitHub", linkedin: "LinkedIn" },
   hero: { title: "Netanel Birhauz", subtitle: "Programmer & A.I Specialist" },
   bio: {
     greeting: "Hi, I'm Nati!",
@@ -44,7 +44,7 @@ const en = {
 };
 
 const he: Translations = {
-  nav: { about: "אודות", projects: "פרויקטים", skills: "כישורים", contact: "צור קשר", github: "GitHub", linkedin: "LinkedIn" },
+  nav: { about: "אודות", aiBot: "נתי-בוט", skills: "כישורים", projects: "פרויקטים", contact: "צור קשר", github: "GitHub", linkedin: "LinkedIn" },
   hero: { title: "נתנאל בירהאוז", subtitle: "מתכנת ומומחה בינה מלאכותית" },
   bio: {
     greeting: "היי, אני נתי!",

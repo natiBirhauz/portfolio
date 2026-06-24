@@ -8,9 +8,9 @@ import NBLogo from "./components/NBLogo";
 import SkillSpotlight from "./components/SkillSpotlight";
 import { useLang } from "./context/LangContext";
 
-/* ─────────────────────────────────────────────────────────
+/* ---------------------------------------------------
    Static data
-───────────────────────────────────────────────────────── */
+--------------------------------------------------- */
 const PROJECTS = [
   {
     key: 0,
@@ -49,9 +49,9 @@ const PROJECTS = [
 
 const normalize = (s: string) => s.toLowerCase().trim();
 
-/* ─────────────────────────────────────────────────────────
+/* ---------------------------------------------------
    Component
-───────────────────────────────────────────────────────── */
+--------------------------------------------------- */
 export default function Home() {
   const { t } = useLang();
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
@@ -74,10 +74,10 @@ export default function Home() {
   return (
     <div className="relative overflow-x-clip min-h-screen w-full">
 
-      {/* ── Background animation ──────────────────────── */}
+      {/* ---------------------------------------------------- Background animation ---------------------------------------------------- */}
       <NBLogo scrollRange={1600} />
 
-      {/* ── ABOUT ────────────────────────────────────── */}
+      {/* ---------------------------------------------------- ABOUT ---------------------------------------------------- */}
       <section id="about" className="flex flex-col items-center justify-center min-h-screen gap-10 text-center relative z-10 px-6 pt-8">
 
         {/* Avatar */}
@@ -169,14 +169,14 @@ export default function Home() {
 
       </section>
 
-      {/* ── WHAT I DO (carousel + skill filter) ─────── */}
+      {/* ---------------------------------------------------- WHAT I DO (carousel + skill filter) ---------------------------------------------------- */}
       <SkillSpotlight
         onBadgeClick={handleBadgeClick}
         activeFilter={activeFilter}
         skillLabels={skillLabels}
       />
 
-      {/* ── PROJECTS ─────────────────────────────────── */}
+      {/* ---------------------------------------------------- PROJECTS ---------------------------------------------------- */}
       <section id="projects" className="flex flex-col items-center gap-10 py-20 relative z-10 px-6">
 
         <Reveal direction="up">
@@ -272,7 +272,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── CONTACT ──────────────────────────────────── */}
+      {/* ---------------------------------------------------- CONTACT ---------------------------------------------------- */}
       <section id="contact" className="flex flex-col items-center gap-8 py-20 relative z-10 px-6">
 
         <Reveal direction="up">

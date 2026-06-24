@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "../context/LangContext";
 
-/* ── constants ────────────────────────────────────────────────── */
+/* ---------------------------------------------------- constants ---------------------------------------------------- */
 const CARD_COLORS = [
   { from: "#059669", to: "#0d9488", glow: "rgba(5,150,105,0.35)"   },
   { from: "#7c3aed", to: "#2563eb", glow: "rgba(124,58,237,0.35)"  },
@@ -45,14 +45,14 @@ const SKILLS = [
   },
 ] as const;
 
-/* ── props ──────────────────────────────────────────────────────── */
+/* ---------------------------------------------------- props ---------------------------------------------------- */
 interface Props {
   onBadgeClick: (item: string) => void;
   activeFilter: string | null;
   skillLabels: Record<string, string>;
 }
 
-/* ── component ──────────────────────────────────────────────────── */
+/* ---------------------------------------------------- component ---------------------------------------------------- */
 export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels }: Props) {
   const { t } = useLang();
   const items = t.skillsSection.items;
@@ -96,7 +96,7 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
       {/* sticky viewport */}
       <div className="sticky top-0 h-screen flex flex-col justify-center gap-5 overflow-hidden">
 
-        {/* ── heading ─────────────────────────────────── */}
+        {/* -- heading -- */}
         <div className="text-center px-8 shrink-0">
           <h2 className="text-6xl font-extrabold bg-gradient-to-r from-emerald-600 via-violet-500 to-teal-500 bg-clip-text text-transparent mb-2">
             {t.skillsSection.heading}
@@ -106,7 +106,7 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
           </p>
         </div>
 
-        {/* ── carousel ────────────────────────────────── */}
+        {/* -- carousel -- */}
         {/*
           Card i is centred when progress = i/(n-1).
           At progress=0: card 0 has dist=0 → perfectly centred.
@@ -193,7 +193,7 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
           })}
         </div>
 
-        {/* ── progress dots ────────────────────────────── */}
+        {/* -- progress dots -- */}
         <div className="flex justify-center gap-3 shrink-0">
           {items.map((_, i) => {
             const active = i === activeIdx;
@@ -210,7 +210,7 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
           })}
         </div>
 
-        {/* ── skill filter cards ───────────────────────── */}
+        {/* -- skill filter cards -- */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 max-w-5xl mx-auto w-full shrink-0">
           {SKILLS.map((skill) => {
             const isOpen = openDropdown === skill.id;

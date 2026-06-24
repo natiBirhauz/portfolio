@@ -268,7 +268,10 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
                             key={item}
                             whileHover={{ scale: 1.08 }}
                             whileTap={{ scale: 0.94 }}
-                            onClick={() => onBadgeClick(item)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onBadgeClick(item);
+                            }}
                             className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors duration-150 cursor-pointer select-none
                               ${activeFilter === item ? skill.badgeActive : skill.badgeBase}`}
                           >

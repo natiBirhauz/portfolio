@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import Reveal from "./components/Reveal";
 import NBLogo from "./components/NBLogo";
 import SkillSpotlight from "./components/SkillSpotlight";
@@ -82,15 +83,20 @@ export default function Home() {
         {/* Avatar */}
         <Reveal direction="down">
           <div className="relative group">
-            {/* pulse ring */}
             <div className="absolute inset-0 rounded-full bg-emerald-400 animate-pulse-ring" />
-            <Image
-              src="/nati-avatar.webp"
-              alt="Nati Birhauz"
-              width={280} height={280}
-              className="relative rounded-full shadow-2xl border-[10px] border-emerald-400 group-hover:scale-105 transition-transform duration-500 bg-white animate-float"
-              priority
-            />
+            <motion.div
+              whileHover={{ scale: 1.07, rotate: 2 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 260, damping: 18 }}
+            >
+              <Image
+                src="/nati-avatar.webp"
+                alt="Nati Birhauz"
+                width={280} height={280}
+                className="relative rounded-full shadow-2xl border-[10px] border-emerald-400 bg-white animate-float"
+                priority
+              />
+            </motion.div>
           </div>
         </Reveal>
 
@@ -108,16 +114,31 @@ export default function Home() {
           </h2>
         </Reveal>
 
-        {/* Bio card */}
+        {/* Bio card — glassmorphism */}
         <Reveal direction="up" delay={400} className="w-full max-w-4xl">
-          <div className="relative animate-scale-in" style={{ animationDelay: "0.4s" }}>
+          <motion.div
+            className="relative"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ y: -4 }}
+          >
             {/* shimmer border */}
             <div
               className="absolute -inset-[3px] rounded-3xl animate-shimmer-border pointer-events-none"
               style={{ background: "linear-gradient(120deg, #6ee7b7, #7c3aed, #2dd4bf, #059669, #6ee7b7)" }}
             />
-            <div className="box-card relative rounded-3xl px-14 py-12 shadow-2xl flex flex-col gap-5 text-center overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-2 rounded-t-3xl bg-gradient-to-r from-emerald-400 via-violet-500 to-teal-400" />
+            <div
+              className="relative rounded-3xl px-16 py-14 shadow-2xl flex flex-col gap-6 text-center overflow-hidden"
+              style={{
+                background: "rgba(255,255,255,0.78)",
+                backdropFilter: "blur(24px)",
+                WebkitBackdropFilter: "blur(24px)",
+                border: "1.5px solid rgba(255,255,255,0.7)",
+                boxShadow: "0 40px 80px -20px rgba(5,150,105,0.18), 0 0 0 1px rgba(255,255,255,0.5), inset 0 1px 0 rgba(255,255,255,0.95)",
+              }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-3xl bg-gradient-to-r from-emerald-400 via-violet-500 to-teal-400" />
 
               <p className="animate-blur-up text-5xl font-black bg-gradient-to-r from-emerald-500 via-violet-500 to-teal-500 bg-clip-text text-transparent" style={{ animationDelay: "0.5s" }}>
                 {t.bio.greeting}
@@ -143,7 +164,7 @@ export default function Home() {
                 {t.bio.line4b}
               </p>
             </div>
-          </div>
+          </motion.div>
         </Reveal>
 
       {/* ── WHAT I DO (carousel + skill filter) ─────── */}
@@ -169,9 +190,20 @@ export default function Home() {
             const delays = [0, 150, 300] as const;
             return (
               <Reveal key={project.key} direction={dirs[idx % 3]} delay={delays[idx % 3]}>
-                <div className={`box-card relative rounded-2xl shadow-lg p-6 flex flex-col gap-4 border-2 transition-all duration-500 h-full
-                  ${highlighted ? "border-emerald-400 shadow-emerald-100 shadow-xl scale-[1.03]" : "border-gray-100"}
-                  hover:scale-[1.05] hover:shadow-2xl`}
+                <motion.div
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 280, damping: 22 }}
+                  className={`relative rounded-2xl flex flex-col gap-4 p-6 border-2 h-full overflow-hidden
+                    ${highlighted ? "border-emerald-400" : "border-white/60"}`}
+                  style={{
+                    background: "rgba(255,255,255,0.75)",
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                    boxShadow: highlighted && activeFilter
+                      ? "0 24px 48px -8px rgba(5,150,105,0.20), inset 0 1px 0 rgba(255,255,255,0.9)"
+                      : "0 8px 32px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.85)",
+                  }}
                 >
                   {highlighted && activeFilter && (
                     <span className="absolute inset-0 rounded-2xl ring-2 ring-emerald-400 pointer-events-none" />
@@ -231,7 +263,7 @@ export default function Home() {
                       </a>
                     )}
                   </div>
-                </div>
+                </motion.div>
               </Reveal>
             );
           })}
@@ -247,18 +279,24 @@ export default function Home() {
 
         <Reveal direction="up" delay={200}>
           <div className="flex gap-5 flex-wrap justify-center">
-            <a href="https://github.com/natibirhauz" target="_blank" rel="noopener noreferrer"
-              className="px-8 py-3 rounded-full bg-gradient-to-r from-gray-800 to-emerald-700 text-white text-lg font-bold shadow-lg hover:scale-105 transition-transform">
-              {t.nav.github}
-            </a>
-            <a href="https://www.linkedin.com/in/nati-birhauz-296724159/" target="_blank" rel="noopener noreferrer"
-              className="px-8 py-3 rounded-full bg-gradient-to-r from-blue-600 to-teal-500 text-white text-lg font-bold shadow-lg hover:scale-105 transition-transform">
-              {t.nav.linkedin}
-            </a>
-            <a href="mailto:nati4455@gmail.com"
-              className="px-8 py-3 rounded-full bg-gradient-to-r from-violet-500 to-emerald-500 text-white text-lg font-bold shadow-lg hover:scale-105 transition-transform">
-              {t.contact.email}
-            </a>
+            {[
+              { href: "https://github.com/natibirhauz",                              label: t.nav.github,   cls: "from-gray-800 to-emerald-700" },
+              { href: "https://www.linkedin.com/in/nati-birhauz-296724159/",         label: t.nav.linkedin, cls: "from-blue-600 to-teal-500"    },
+              { href: "mailto:nati4455@gmail.com",                                   label: t.contact.email,cls: "from-violet-500 to-emerald-500" },
+            ].map(({ href, label, cls }) => (
+              <motion.a
+                key={href}
+                href={href}
+                target={href.startsWith("mailto") ? undefined : "_blank"}
+                rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+                whileHover={{ y: -4, scale: 1.06, boxShadow: "0 16px 40px rgba(0,0,0,0.18)" }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 320, damping: 20 }}
+                className={`px-8 py-3 rounded-full bg-gradient-to-r ${cls} text-white text-lg font-bold shadow-lg`}
+              >
+                {label}
+              </motion.a>
+            ))}
           </div>
         </Reveal>
       </section>

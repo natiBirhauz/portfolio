@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Reveal from "./components/Reveal";
 import NBLogo from "./components/NBLogo";
 import SkillSpotlight from "./components/SkillSpotlight";
+import PerformanceMetrics from "./components/PerformanceMetrics";
 import { useLang } from "./context/LangContext";
 
 /* ---------------------------------------------------
@@ -302,6 +303,9 @@ export default function Home() {
           </div>
         </Reveal>
       </section>
+
+      {/* Performance Metrics */}
+      <PerformanceMetrics />
 
     </div>
   );

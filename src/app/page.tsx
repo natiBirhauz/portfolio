@@ -167,6 +167,8 @@ export default function Home() {
           </motion.div>
         </Reveal>
 
+      </section>
+
       {/* ── WHAT I DO (carousel + skill filter) ─────── */}
       <SkillSpotlight
         onBadgeClick={handleBadgeClick}

@@ -112,14 +112,14 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
           At progress=0: card 0 has dist=0 → perfectly centred.
           Cards to the right have positive dist → shifted right; they scroll in as progress increases.
         */}
-        <div className="relative w-full shrink-0" style={{ height: 300 }}>
+        <div className="relative w-full shrink-0" style={{ height: 320 }}>
           {items.map((item, i) => {
             const centerAt = n > 1 ? i / (n - 1) : 0;
             // dist: 0 = centred, positive = right of centre, negative = left
             const dist = (progress - centerAt) * (n - 1);
             const tx = -dist * 52;          // vw — how far to slide
             const scale = Math.max(0.5, 1 - Math.abs(dist) * 0.20);
-            const opacity = Math.max(0, 1 - Math.abs(dist) * 0.45);
+            const opacity = Math.max(0.2, 1 - Math.abs(dist) * 0.45);
             const zIndex = Math.round(100 - Math.abs(dist) * 25);
             const colors = CARD_COLORS[i % CARD_COLORS.length];
             const isCentered = Math.abs(dist) < 0.3;
@@ -155,7 +155,7 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   className="relative rounded-3xl overflow-hidden"
                   style={{
-                    background: "rgba(255,255,255,0.72)",
+                    background: "rgba(255,255,255,0.85)",
                     backdropFilter: "blur(20px)",
                     WebkitBackdropFilter: "blur(20px)",
                     border: `1.5px solid rgba(255,255,255,0.6)`,
@@ -211,7 +211,7 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
         </div>
 
         {/* -- skill filter cards -- */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 max-w-5xl mx-auto w-full shrink-0">
+        <div className="grid grid-cols-1 gap-4 px-6 max-w-5xl mx-auto w-full shrink-0">
           {SKILLS.map((skill) => {
             const isOpen = openDropdown === skill.id;
             return (

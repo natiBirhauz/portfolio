@@ -29,24 +29,33 @@ export default function Navbar() {
   return (
     <nav
       className={`
-        fixed top-0 right-0 h-full w-20 z-50
-        flex flex-col items-center justify-between py-6
-        bg-white/90 backdrop-blur
-        border-l border-emerald-200 shadow-md
+        fixed z-50
+        bg-white/90 backdrop-blur shadow-md
         transition-transform duration-300 ease-in-out
-        ${visible ? "translate-x-0" : "translate-x-full"}
+        
+        /* Mobile: top horizontal bar */
+        top-0 left-0 right-0 h-16
+        flex flex-row items-center justify-between px-4
+        border-b border-emerald-200
+        ${visible ? "translate-y-0" : "-translate-y-full"}
+        
+        /* Desktop: right vertical sidebar */
+        md:top-0 md:right-0 md:left-auto md:bottom-0 md:h-full md:w-20
+        md:flex-col md:justify-between md:py-6 md:px-0
+        md:border-l md:border-b-0
+        md:${visible ? "translate-x-0 translate-y-0" : "translate-x-full translate-y-0"}
       `}
     >
       {/* Nav links */}
-      <ul className="flex flex-col gap-1 items-center w-full px-1">
+      <ul className="flex flex-row md:flex-col gap-1 items-center md:w-full md:px-1">
         {links.map(({ href, label, external }) => (
-          <li key={href} className="w-full">
+          <li key={href} className="md:w-full">
             <a
               href={href}
               target={external ? "_blank" : undefined}
               rel={external ? "noopener noreferrer" : undefined}
-              className="block w-full text-center text-[11px] font-semibold py-2 px-1 rounded-xl
-                text-gray-700 hover:bg-emerald-100 transition-colors leading-tight"
+              className="block text-center text-[11px] font-semibold py-2 px-2 md:px-1 rounded-xl
+                text-gray-700 hover:bg-emerald-100 transition-colors leading-tight whitespace-nowrap"
             >
               {label}
             </a>
@@ -55,11 +64,11 @@ export default function Navbar() {
       </ul>
 
       {/* Language toggle — flag background */}
-      <div className="w-full px-2">
+      <div className="md:w-full md:px-2">
         <button
           onClick={toggleLang}
           title={lang === "en" ? "Switch to Hebrew" : "Switch to English"}
-          className="w-full h-12 rounded-xl overflow-hidden border-2 border-emerald-300 shadow hover:scale-105 transition-transform relative"
+          className="w-12 h-12 md:w-full rounded-xl overflow-hidden border-2 border-emerald-300 shadow hover:scale-105 transition-transform relative"
           style={{
             backgroundImage: `url(${lang === "en"
               ? "https://flagcdn.com/w40/il.png"

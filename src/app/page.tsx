@@ -74,7 +74,7 @@ export default function Home() {
     activeFilter === null || tags.some(tag => normalize(tag) === normalize(activeFilter));
 
   return (
-    <div className="relative overflow-x-clip min-h-screen w-full">
+    <div className="relative overflow-x-clip min-h-screen w-full pt-16 md:pt-0">
 
       {/* 3D Background */}
       <ThreeBackground />

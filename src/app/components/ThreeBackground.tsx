@@ -37,11 +37,11 @@ function ParticleField() {
     <Points ref={ref} positions={particlesPosition} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
-        color="#059669"
-        size={0.015}
+        color="#10b981"
+        size={0.04}
         sizeAttenuation={true}
         depthWrite={false}
-        opacity={0.35}
+        opacity={0.6}
         blending={THREE.AdditiveBlending}
       />
     </Points>
@@ -77,10 +77,10 @@ function WaveGrid() {
     <mesh ref={ref} rotation={[-Math.PI / 3, 0, 0]} position={[0, -2, -1]}>
       <planeGeometry args={[10, 10, 40, 40]} />
       <meshStandardMaterial
-        color="#0d9488"
+        color="#14b8a6"
         wireframe
         transparent
-        opacity={0.15}
+        opacity={0.3}
         side={THREE.DoubleSide}
       />
     </mesh>
@@ -89,7 +89,7 @@ function WaveGrid() {
 
 export default function ThreeBackground() {
   return (
-    <div className="fixed inset-0 -z-10 pointer-events-none">
+    <div className="fixed inset-0 z-[2] pointer-events-none">
       <Canvas
         camera={{ position: [0, 0, 5], fov: 50 }}
         gl={{ 
@@ -98,6 +98,7 @@ export default function ThreeBackground() {
           powerPreference: "low-power",
         }}
         dpr={[1, 1.5]} // Limit pixel ratio for performance
+        style={{ background: 'transparent' }}
       >
         {/* Subtle ambient light */}
         <ambientLight intensity={0.5} />

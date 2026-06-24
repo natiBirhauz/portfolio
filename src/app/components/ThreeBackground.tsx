@@ -258,7 +258,7 @@ export default function ThreeBackground() {
           powerPreference: "high-performance",
         }}
         dpr={[1, 2]} // Higher pixel density for a sharper scene
-        style={{ background: 'transparent', imageRendering: 'optimizeQuality', transform: 'translateZ(0)' }}
+        style={{ background: 'transparent', transform: 'translateZ(0)' }}
         onPointerMove={(event) => {
           // Ensure the scene can react to pointer movements through the transparent overlay
           event.stopPropagation();

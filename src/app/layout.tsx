@@ -39,8 +39,8 @@ export default function RootLayout({
         <ThemeProvider>
           <LangProvider>
             <Navbar />
-            {/* pr-20 offsets content for the right side navbar */}
-            <div className="pr-20 w-full">
+            {/* md:pr-20 offsets content for the desktop sidebar only */}
+            <div className="md:pr-20 w-full">
               {children}
             </div>
           </LangProvider>

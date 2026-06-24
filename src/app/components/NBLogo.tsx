@@ -40,13 +40,12 @@ export default function NBLogo({ scrollRange = 1600 }: { scrollRange?: number })
         ref={videoRef}
         src="/nb-animation.webm"
         muted playsInline preload="auto" aria-hidden="true"
-        className="fixed inset-0 w-full h-full object-cover z-0 pointer-events-none"
+        className="fixed inset-0 w-full h-full object-contain md:object-cover z-0 pointer-events-none origin-center md:scale-100 scale-[0.98]"
         style={{
           opacity: 0.35,
           maskImage: edgeMask,
           WebkitMaskImage: edgeMask,
           willChange: 'transform, opacity',
-          transform: 'translateZ(0)',
         }}
       />
 

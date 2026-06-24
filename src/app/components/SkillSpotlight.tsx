@@ -61,6 +61,7 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
   // raw progress 0→1 driven purely by scrollY vs section offsetTop
   const [progress, setProgress] = useState(0);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -74,12 +75,18 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
       const scrolled = window.scrollY - sectionTop;
       setProgress(Math.min(Math.max(scrolled / scrollable, 0), 1));
     };
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      update();
+    };
+
     window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    update();
+    window.addEventListener("resize", handleResize);
+    handleResize();
     return () => {
       window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -90,11 +97,10 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
     <section
       id="skills-section"
       ref={sectionRef}
-      className="relative z-10"
-      style={{ minHeight: "500vh" }}
+      className="relative z-10 min-h-screen md:min-h-[500vh]"
     >
       {/* sticky viewport */}
-      <div className="sticky top-0 h-screen flex flex-col justify-center gap-5 overflow-hidden">
+      <div className="md:sticky top-0 md:h-screen relative flex flex-col justify-center gap-5 overflow-visible z-20">
 
         {/* -- heading -- */}
         <div className="text-center px-8 shrink-0">
@@ -117,9 +123,10 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
             const centerAt = n > 1 ? i / (n - 1) : 0;
             // dist: 0 = centred, positive = right of centre, negative = left
             const dist = (progress - centerAt) * (n - 1);
-            const tx = -dist * 52;          // vw — how far to slide
-            const scale = Math.max(0.5, 1 - Math.abs(dist) * 0.20);
-            const opacity = Math.max(0.2, 1 - Math.abs(dist) * 0.45);
+            const slideFactor = isMobile ? 28 : 40;
+            const tx = -dist * slideFactor;          // vw — how far to slide
+            const scale = Math.max(0.55, 1 - Math.abs(dist) * 0.20);
+            const opacity = Math.max(0.25, 1 - Math.abs(dist) * 0.45);
             const zIndex = Math.round(100 - Math.abs(dist) * 25);
             const colors = CARD_COLORS[i % CARD_COLORS.length];
             const isCentered = Math.abs(dist) < 0.3;
@@ -130,8 +137,7 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
                 className="absolute top-0 left-1/2"
                 style={{
                   width: "min(560px, 84vw)",
-                  marginLeft: "min(-280px, -42vw)",
-                  transform: `translateX(${tx}vw) scale(${scale})`,
+                  transform: `translateX(calc(-50% + ${tx}vw)) scale(${scale})`,
                   opacity,
                   zIndex,
                   // NO CSS transition — scroll drives this directly for instant response

@@ -284,7 +284,7 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------------------------- CONTACT ---------------------------------------------------- */}
-      <section id="contact" className="flex flex-col items-center gap-8 py-20 relative z-10 px-6">
+      <section id="contact" className="flex flex-col items-center gap-8 py-20 relative z-10 px-6 text-center">
 
         <Reveal direction="up">
           <h2 className="text-6xl font-extrabold text-gray-800">{t.contact.heading}</h2>

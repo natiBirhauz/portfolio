@@ -52,8 +52,53 @@ function WaveGrid() {
   const ref = useRef<THREE.Mesh>(null);
   const mouseX = useRef(0);
   const mouseY = useRef(0);
+  const prevMouseX = useRef(0);
+  const prevMouseY = useRef(0);
   
-  // Track mouse position
+  // Create shader material with radial fade
+  const material = useMemo(() => {
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        color: { value: new THREE.Color("#14b8a6") },
+        opacity: { value: 0.35 },
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        varying vec3 vPosition;
+        
+        void main() {
+          vUv = uv;
+          vPosition = position;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 color;
+        uniform float opacity;
+        varying vec2 vUv;
+        varying vec3 vPosition;
+        
+        void main() {
+          // Calculate distance from center (0.5, 0.5)
+          vec2 center = vec2(0.5, 0.5);
+          float dist = distance(vUv, center);
+          
+          // Create radial fade - center is more transparent, edges are more opaque
+          float radialFade = smoothstep(0.0, 0.5, dist);
+          
+          // Combine with base opacity
+          float finalOpacity = opacity * radialFade;
+          
+          gl_FragColor = vec4(color, finalOpacity);
+        }
+      `,
+      transparent: true,
+      side: THREE.DoubleSide,
+      wireframe: true,
+    });
+  }, []);
+  
+  // Track mouse position and velocity
   useFrame((state) => {
     if (ref.current) {
       const time = state.clock.elapsedTime;
@@ -61,10 +106,18 @@ function WaveGrid() {
       const positionAttribute = geometry.attributes.position;
       
       // Smoothly interpolate mouse influence
-      const targetMouseX = (state.mouse.x * Math.PI) / 4;
-      const targetMouseY = (state.mouse.y * Math.PI) / 4;
-      mouseX.current += (targetMouseX - mouseX.current) * 0.05;
-      mouseY.current += (targetMouseY - mouseY.current) * 0.05;
+      const targetMouseX = state.mouse.x;
+      const targetMouseY = state.mouse.y;
+      
+      prevMouseX.current = mouseX.current;
+      prevMouseY.current = mouseY.current;
+      
+      mouseX.current += (targetMouseX - mouseX.current) * 0.08;
+      mouseY.current += (targetMouseY - mouseY.current) * 0.08;
+      
+      // Calculate mouse velocity for stretch direction
+      const velocityX = mouseX.current - prevMouseX.current;
+      const velocityY = mouseY.current - prevMouseY.current;
       
       for (let i = 0; i < positionAttribute.count; i++) {
         const x = positionAttribute.getX(i);
@@ -77,30 +130,27 @@ function WaveGrid() {
         
         // Mouse influence - creates ripple effect following cursor
         const distanceFromCenter = Math.sqrt(x * x + y * y);
-        const mouseInfluence = Math.sin(distanceFromCenter - time + mouseX.current + mouseY.current) * 0.15;
+        const mouseInfluence = Math.sin(distanceFromCenter - time + mouseX.current * 3 + mouseY.current * 3) * 0.15;
         
-        positionAttribute.setZ(i, wave1 + wave2 + wave3 + mouseInfluence);
+        // Stretch effect based on mouse movement direction
+        const stretchX = velocityX * x * 0.5;
+        const stretchY = velocityY * y * 0.5;
+        
+        positionAttribute.setZ(i, wave1 + wave2 + wave3 + mouseInfluence + stretchX + stretchY);
       }
       
       positionAttribute.needsUpdate = true;
       geometry.computeVertexNormals();
       
       // Subtle rotation based on mouse
-      ref.current.rotation.x = -Math.PI / 3 + mouseY.current * 0.1;
+      ref.current.rotation.x = -Math.PI / 3 + mouseY.current * 0.15;
       ref.current.rotation.z = mouseX.current * 0.1;
     }
   });
 
   return (
-    <mesh ref={ref} rotation={[-Math.PI / 3, 0, 0]} position={[0, -1.5, -2]}>
-      <planeGeometry args={[6, 6, 32, 32]} />
-      <meshStandardMaterial
-        color="#14b8a6"
-        wireframe
-        transparent
-        opacity={0.3}
-        side={THREE.DoubleSide}
-      />
+    <mesh ref={ref} rotation={[-Math.PI / 3, 0, 0]} position={[0, -1.2, -2.5]} scale={[1.5, 0.7, 1]} material={material}>
+      <planeGeometry args={[10, 6, 50, 30]} />
     </mesh>
   );
 }

@@ -9,6 +9,7 @@ import SkillSpotlight from "./components/SkillSpotlight";
 import PerformanceMetrics from "./components/PerformanceMetrics";
 import ThreeBackground from "./components/ThreeBackground";
 import { useLang } from "./context/LangContext";
+import ChatAgent from "./components/AIChat/ChatAgent";
 
 /* ---------------------------------------------------
    Static data
@@ -172,6 +173,11 @@ export default function Home() {
           </motion.div>
         </Reveal>
 
+      </section>
+
+      {/* ---------------------------------------------------- AI AGENT CHAT ---------------------------------------------------- */}
+      <section id="ai-agent" className="flex flex-col items-center gap-8 py-12 relative z-10 px-6">
+        <ChatAgent />
       </section>
 
       {/* ---------------------------------------------------- WHAT I DO (carousel + skill filter) ---------------------------------------------------- */}

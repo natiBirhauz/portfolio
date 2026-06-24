@@ -7,6 +7,7 @@ import Reveal from "./components/Reveal";
 import NBLogo from "./components/NBLogo";
 import SkillSpotlight from "./components/SkillSpotlight";
 import PerformanceMetrics from "./components/PerformanceMetrics";
+import ThreeBackground from "./components/ThreeBackground";
 import { useLang } from "./context/LangContext";
 
 /* ---------------------------------------------------
@@ -74,6 +75,9 @@ export default function Home() {
 
   return (
     <div className="relative overflow-x-clip min-h-screen w-full">
+
+      {/* 3D Background */}
+      <ThreeBackground />
 
       {/* ---------------------------------------------------- Background animation ---------------------------------------------------- */}
       <NBLogo scrollRange={1600} />

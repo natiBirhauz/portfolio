@@ -25,11 +25,11 @@ function ParticleField() {
     return positions;
   }, []);
 
-  // Slow rotation animation
+  // Slow rotation animation with mouse influence
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.x = state.clock.elapsedTime * 0.03;
-      ref.current.rotation.y = state.clock.elapsedTime * 0.05;
+      ref.current.rotation.x = state.clock.elapsedTime * 0.03 + state.mouse.y * 0.1;
+      ref.current.rotation.y = state.clock.elapsedTime * 0.05 + state.mouse.x * 0.1;
     }
   });
 
@@ -50,32 +50,50 @@ function ParticleField() {
 
 function WaveGrid() {
   const ref = useRef<THREE.Mesh>(null);
+  const mouseX = useRef(0);
+  const mouseY = useRef(0);
   
+  // Track mouse position
   useFrame((state) => {
     if (ref.current) {
       const time = state.clock.elapsedTime;
       const geometry = ref.current.geometry as THREE.PlaneGeometry;
       const positionAttribute = geometry.attributes.position;
       
+      // Smoothly interpolate mouse influence
+      const targetMouseX = (state.mouse.x * Math.PI) / 4;
+      const targetMouseY = (state.mouse.y * Math.PI) / 4;
+      mouseX.current += (targetMouseX - mouseX.current) * 0.05;
+      mouseY.current += (targetMouseY - mouseY.current) * 0.05;
+      
       for (let i = 0; i < positionAttribute.count; i++) {
         const x = positionAttribute.getX(i);
         const y = positionAttribute.getY(i);
         
+        // Base waves
         const wave1 = Math.sin(x * 0.5 + time * 0.3) * 0.1;
         const wave2 = Math.sin(y * 0.5 + time * 0.2) * 0.1;
         const wave3 = Math.sin((x + y) * 0.3 + time * 0.4) * 0.05;
         
-        positionAttribute.setZ(i, wave1 + wave2 + wave3);
+        // Mouse influence - creates ripple effect following cursor
+        const distanceFromCenter = Math.sqrt(x * x + y * y);
+        const mouseInfluence = Math.sin(distanceFromCenter - time + mouseX.current + mouseY.current) * 0.15;
+        
+        positionAttribute.setZ(i, wave1 + wave2 + wave3 + mouseInfluence);
       }
       
       positionAttribute.needsUpdate = true;
       geometry.computeVertexNormals();
+      
+      // Subtle rotation based on mouse
+      ref.current.rotation.x = -Math.PI / 3 + mouseY.current * 0.1;
+      ref.current.rotation.z = mouseX.current * 0.1;
     }
   });
 
   return (
-    <mesh ref={ref} rotation={[-Math.PI / 3, 0, 0]} position={[0, -2, -1]}>
-      <planeGeometry args={[10, 10, 40, 40]} />
+    <mesh ref={ref} rotation={[-Math.PI / 3, 0, 0]} position={[0, -1.5, -2]}>
+      <planeGeometry args={[6, 6, 32, 32]} />
       <meshStandardMaterial
         color="#14b8a6"
         wireframe

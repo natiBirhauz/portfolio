@@ -101,7 +101,7 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
           <h2 className="text-6xl font-extrabold bg-gradient-to-r from-emerald-600 via-violet-500 to-teal-500 bg-clip-text text-transparent mb-2">
             {t.skillsSection.heading}
           </h2>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto font-medium">
+          <p className="text-xl text-gray-800 max-w-2xl mx-auto font-semibold drop-shadow-sm">
             {t.skillsSection.intro}
           </p>
         </div>
@@ -231,7 +231,10 @@ export default function SkillSpotlight({ onBadgeClick, activeFilter, skillLabels
                 transition={{ type: "spring", stiffness: 300, damping: 22 }}
               >
                 <button
-                  onClick={() => setOpenDropdown(p => p === skill.id ? null : skill.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenDropdown(prev => prev === skill.id ? null : skill.id);
+                  }}
                   className="w-full flex items-center justify-between px-5 py-4 cursor-pointer focus:outline-none"
                   aria-expanded={isOpen}
                 >

@@ -1,82 +1,182 @@
 "use client";
 
-import { useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useRef, useMemo, useState } from "react";
+import { Canvas, useFrame, ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 
-function GeometricShapes() {
+interface Shape {
+  id: number;
+  position: THREE.Vector3;
+  velocity: THREE.Vector3;
+  rotation: THREE.Euler;
+  rotationSpeed: THREE.Vector3;
+  scale: number;
+  type: number;
+  opacity: number;
+}
+
+function RainingShapes() {
   const groupRef = useRef<THREE.Group>(null);
-  
-  // Generate geometric shapes with connected nodes
-  const shapes = useMemo(() => {
-    const shapesData = [];
-    
-    for (let i = 0; i < 8; i++) {
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(Math.random() * 2 - 1);
-      const radius = 3 + Math.random() * 4;
-      
-      shapesData.push({
-        position: [
-          radius * Math.sin(phi) * Math.cos(theta),
-          radius * Math.sin(phi) * Math.sin(theta),
-          radius * Math.cos(phi)
-        ] as [number, number, number],
-        rotation: [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI] as [number, number, number],
-        scale: 0.3 + Math.random() * 0.4,
-        type: Math.floor(Math.random() * 3), // 0: tetrahedron, 1: octahedron, 2: icosahedron
-      });
+  const [shapes, setShapes] = useState<Shape[]>([]);
+  const nextId = useRef(0);
+  const mousePos = useRef(new THREE.Vector2(0, 0));
+
+  // Generate new shape
+  const createShape = () => {
+    return {
+      id: nextId.current++,
+      position: new THREE.Vector3(
+        (Math.random() - 0.5) * 12,
+        8 + Math.random() * 2,
+        (Math.random() - 0.5) * 8
+      ),
+      velocity: new THREE.Vector3(
+        (Math.random() - 0.5) * 0.02,
+        -0.02 - Math.random() * 0.02,
+        (Math.random() - 0.5) * 0.01
+      ),
+      rotation: new THREE.Euler(
+        Math.random() * Math.PI,
+        Math.random() * Math.PI,
+        Math.random() * Math.PI
+      ),
+      rotationSpeed: new THREE.Vector3(
+        (Math.random() - 0.5) * 0.02,
+        (Math.random() - 0.5) * 0.02,
+        (Math.random() - 0.5) * 0.02
+      ),
+      scale: 0.25 + Math.random() * 0.35,
+      type: Math.floor(Math.random() * 3),
+      opacity: 0.7,
+    };
+  };
+
+  // Initialize shapes
+  useMemo(() => {
+    const initial: Shape[] = [];
+    for (let i = 0; i < 12; i++) {
+      initial.push(createShape());
     }
-    
-    return shapesData;
+    setShapes(initial);
   }, []);
 
-  // Rotation animation with mouse influence
+  // Animation loop
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.x = state.clock.elapsedTime * 0.02 + state.mouse.y * 0.1;
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.03 + state.mouse.x * 0.1;
+      groupRef.current.rotation.x = state.clock.elapsedTime * 0.01;
+      groupRef.current.rotation.y = state.clock.elapsedTime * 0.015;
       
-      // Rotate individual shapes
-      groupRef.current.children.forEach((child, i) => {
-        child.rotation.x += 0.005 * (i % 2 === 0 ? 1 : -1);
-        child.rotation.y += 0.007 * (i % 2 === 0 ? -1 : 1);
-      });
+      mousePos.current.set(state.mouse.x, state.mouse.y);
     }
+
+    // Update shapes
+    setShapes((prev) =>
+      prev.map((shape) => {
+        // Update position
+        shape.position.add(shape.velocity);
+        
+        // Mouse influence - push shapes away from cursor
+        const mouseInfluence = new THREE.Vector2(
+          shape.position.x / 5,
+          shape.position.y / 5
+        );
+        const distToMouse = mouseInfluence.distanceTo(mousePos.current);
+        if (distToMouse < 1.5) {
+          const pushDir = new THREE.Vector2()
+            .subVectors(mouseInfluence, mousePos.current)
+            .normalize()
+            .multiplyScalar(0.03);
+          shape.velocity.x += pushDir.x;
+          shape.velocity.y += pushDir.y;
+        }
+        
+        // Update rotation
+        shape.rotation.x += shape.rotationSpeed.x;
+        shape.rotation.y += shape.rotationSpeed.y;
+        shape.rotation.z += shape.rotationSpeed.z;
+        
+        // Fade out when near bottom
+        if (shape.position.y < -6) {
+          shape.opacity -= 0.02;
+        }
+        
+        // Reset if out of bounds or faded
+        if (shape.position.y < -8 || shape.opacity <= 0) {
+          return createShape();
+        }
+        
+        return shape;
+      })
+    );
   });
 
+  // Handle clicks - explode nearby shapes
+  const handleClick = (event: ThreeEvent<MouseEvent>) => {
+    event.stopPropagation();
+    const clickPos = event.point;
+    
+    setShapes((prev) =>
+      prev.map((shape) => {
+        const dist = shape.position.distanceTo(clickPos);
+        if (dist < 2) {
+          // Explode shape outward
+          const dir = new THREE.Vector3()
+            .subVectors(shape.position, clickPos)
+            .normalize();
+          shape.velocity.add(dir.multiplyScalar(0.2));
+          shape.rotationSpeed.multiplyScalar(3);
+        }
+        return shape;
+      })
+    );
+  };
+
   return (
-    <group ref={groupRef}>
-      {shapes.map((shape, i) => (
-        <group key={i} position={shape.position} rotation={shape.rotation} scale={shape.scale}>
-          {/* Main geometric shape - wireframe */}
+    <group ref={groupRef} onClick={handleClick}>
+      {shapes.map((shape) => (
+        <group
+          key={shape.id}
+          position={shape.position}
+          rotation={shape.rotation}
+          scale={shape.scale}
+        >
+          {/* Main wireframe */}
           <lineSegments>
             {shape.type === 0 && <tetrahedronGeometry args={[1, 0]} />}
             {shape.type === 1 && <octahedronGeometry args={[1, 0]} />}
             {shape.type === 2 && <icosahedronGeometry args={[1, 0]} />}
-            <lineBasicMaterial color="#10b981" transparent opacity={0.7} linewidth={2} />
+            <lineBasicMaterial
+              color="#10b981"
+              transparent
+              opacity={shape.opacity * 0.7}
+              linewidth={2}
+            />
           </lineSegments>
-          
-          {/* Connecting nodes at vertices */}
+
+          {/* Vertex nodes */}
           <points>
             {shape.type === 0 && <tetrahedronGeometry args={[1, 0]} />}
             {shape.type === 1 && <octahedronGeometry args={[1, 0]} />}
             {shape.type === 2 && <icosahedronGeometry args={[1, 0]} />}
-            <pointsMaterial 
-              color="#14b8a6" 
-              size={0.08} 
-              transparent 
-              opacity={0.9}
+            <pointsMaterial
+              color="#14b8a6"
+              size={0.08}
+              transparent
+              opacity={shape.opacity * 0.9}
               sizeAttenuation
             />
           </points>
-          
-          {/* Inner connecting lines */}
+
+          {/* Inner structure */}
           <lineSegments>
             {shape.type === 0 && <tetrahedronGeometry args={[0.5, 0]} />}
             {shape.type === 1 && <octahedronGeometry args={[0.5, 0]} />}
             {shape.type === 2 && <icosahedronGeometry args={[0.5, 0]} />}
-            <lineBasicMaterial color="#059669" transparent opacity={0.4} />
+            <lineBasicMaterial
+              color="#059669"
+              transparent
+              opacity={shape.opacity * 0.4}
+            />
           </lineSegments>
         </group>
       ))}
@@ -115,16 +215,10 @@ function WaveGrid() {
         varying vec3 vPosition;
         
         void main() {
-          // Calculate distance from center (0.5, 0.5)
           vec2 center = vec2(0.5, 0.5);
           float dist = distance(vUv, center);
-          
-          // Create radial fade - center is more transparent, edges are more opaque
           float radialFade = smoothstep(0.0, 0.5, dist);
-          
-          // Combine with base opacity
           float finalOpacity = opacity * radialFade;
-          
           gl_FragColor = vec4(color, finalOpacity);
         }
       `,
@@ -134,7 +228,7 @@ function WaveGrid() {
     });
   }, []);
   
-  // Track mouse position and velocity
+  // Track mouse position and velocity for interactivity
   useFrame((state) => {
     if (ref.current) {
       const time = state.clock.elapsedTime;
@@ -164,7 +258,7 @@ function WaveGrid() {
         const wave2 = Math.sin(y * 0.5 + time * 0.2) * 0.1;
         const wave3 = Math.sin((x + y) * 0.3 + time * 0.4) * 0.05;
         
-        // Mouse influence - creates ripple effect following cursor
+        // Mouse influence - creates ripple effect
         const distanceFromCenter = Math.sqrt(x * x + y * y);
         const mouseInfluence = Math.sin(distanceFromCenter - time + mouseX.current * 3 + mouseY.current * 3) * 0.15;
         
@@ -193,7 +287,7 @@ function WaveGrid() {
 
 export default function ThreeBackground() {
   return (
-    <div className="fixed inset-0 z-[2] pointer-events-none">
+    <div className="fixed inset-0 z-[2]" style={{ pointerEvents: 'none' }}>
       <Canvas
         camera={{ position: [0, 0, 5], fov: 50 }}
         gl={{ 
@@ -201,17 +295,16 @@ export default function ThreeBackground() {
           alpha: true,
           powerPreference: "low-power",
         }}
-        dpr={[1, 1.5]} // Limit pixel ratio for performance
-        style={{ background: 'transparent' }}
+        dpr={[1, 1.5]}
+        style={{ background: 'transparent', pointerEvents: 'auto' }}
       >
-        {/* Subtle ambient light */}
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={0.3} />
         
-        {/* Geometric shapes */}
-        <GeometricShapes />
+        {/* Raining geometric shapes */}
+        <RainingShapes />
         
-        {/* Wave grid */}
+        {/* Interactive wave grid */}
         <WaveGrid />
       </Canvas>
     </div>

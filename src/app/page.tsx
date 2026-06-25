@@ -100,7 +100,7 @@ export default function Home() {
                 alt="Nati Birhauz"
                 width={280}
                 height={280}
-                className="relative rounded-full shadow-2xl border-[10px] border-emerald-400 bg-white animate-float"
+                className="relative rounded-full shadow-2xl border-[10px] border-emerald-400 bg-white animate-float object-cover aspect-square"
                 priority
               />
             </motion.div>

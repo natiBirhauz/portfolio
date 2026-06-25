@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLang } from "../context/LangContext";
 
 interface Metrics {
   ping: number;
@@ -10,6 +11,7 @@ interface Metrics {
 }
 
 export default function PerformanceMetrics() {
+  const { t } = useLang();
   const [isOpen, setIsOpen] = useState(false);
   const [metrics, setMetrics] = useState<Metrics>({
     ping: 0,
@@ -183,7 +185,7 @@ export default function PerformanceMetrics() {
           />
         </svg>
         <span className="hidden sm:inline">
-          {isOpen ? "Hide" : "Metrics"}
+          {isOpen ? t.metrics.close : t.metrics.open}
         </span>
       </motion.button>
     </div>

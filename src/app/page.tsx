@@ -96,9 +96,10 @@ export default function Home() {
               transition={{ type: "spring", stiffness: 260, damping: 18 }}
             >
               <Image
-                src="/nati-avatar.webp"
+                src="/picture.png"
                 alt="Nati Birhauz"
-                width={280} height={280}
+                width={280}
+                height={280}
                 className="relative rounded-full shadow-2xl border-[10px] border-emerald-400 bg-white animate-float"
                 priority
               />
@@ -225,16 +226,19 @@ export default function Home() {
                   {/* Colored top accent */}
                   <div className={`absolute top-0 left-0 right-0 h-1.5 rounded-t-2xl bg-gradient-to-r ${project.accent}`} />
 
-                  <a href={project.link} target="_blank" rel="noopener noreferrer" className="block mt-1">
-                    <Image
-                      src={project.image} alt={project.title}
-                      width={280} height={180}
-                      className="rounded-xl shadow-md hover:scale-105 transition-transform duration-300 object-cover w-full h-48"
-                    />
+                  <a href={project.link} target="_blank" rel="noopener noreferrer" className="block mt-1 rounded-xl overflow-hidden shadow-md">
+                    <div className="relative w-full h-48 sm:h-56 lg:h-48">
+                      <Image
+                        src={project.image}
+                        alt={t.projectList[project.key].title}
+                        fill
+                        className="rounded-xl object-cover"
+                      />
+                    </div>
                   </a>
 
                   <h3 dir="ltr" className={`text-2xl font-extrabold text-center bg-gradient-to-r ${project.accent} bg-clip-text text-transparent`}>
-                    {project.title}
+                    {t.projectList[project.key].title}
                   </h3>
 
                   <p className="text-base text-gray-600 leading-relaxed">

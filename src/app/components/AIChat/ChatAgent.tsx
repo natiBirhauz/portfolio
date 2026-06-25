@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLang } from "../../context/LangContext";
@@ -176,8 +177,14 @@ export default function ChatAgent() {
         <div className="relative z-10 p-6 md:p-8">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between mb-8">
             <div className="flex items-center gap-4">
-              <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-emerald-400 to-cyan-500 shadow-lg shadow-cyan-500/20 text-4xl ring-1 ring-white/70">
-                🤖
+              <div className="flex h-20 w-20 items-center justify-center rounded-3xl overflow-hidden shadow-lg shadow-cyan-500/20 ring-1 ring-white/70">
+                <Image
+                  src="/nati-avatar.webp"
+                  alt="Nati-Bot"
+                  width={80}
+                  height={80}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <div className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Nati-Bot</div>

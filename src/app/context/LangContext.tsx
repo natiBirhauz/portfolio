@@ -25,13 +25,14 @@ const en = {
     ],
   },
   projects: { heading: "Projects", viewProject: "View Project", github: "GitHub", play: "Play on itch.io" },
+  metrics: { open: "Metrics", close: "Hide" },
   projectList: [
     {
       title: "DataMap",
       description: "DataMap helps you map and understand data used for large language models. Python backend + web frontend for uploading, exploring, tagging, and visualizing prompt–response data.",
     },
     {
-      title: "תמצא לי",
+      title: "Find Me",
       description: "An AI tool to check the availability and prices for EVERYTHING — from a pen to a house. This demo is made with AI search prediction.",
     },
     {
@@ -64,6 +65,7 @@ const he: Translations = {
     ],
   },
   projects: { heading: "פרויקטים", viewProject: "צפה בפרויקט", github: "GitHub", play: "שחק ב-itch.io" },
+  metrics: { open: "מדדים", close: "הסתר" },
   projectList: [
     {
       title: "DataMap",

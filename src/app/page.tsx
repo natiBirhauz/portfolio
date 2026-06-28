@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Reveal from "./components/Reveal";
 import NBLogo from "./components/NBLogo";
@@ -65,6 +65,11 @@ export default function Home() {
     languages: t.skills.languages,
   };
 
+  // Reset scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleBadgeClick = (item: string) => {
     const next = activeFilter === item ? null : item;
     setActiveFilter(next);
@@ -96,7 +101,7 @@ export default function Home() {
               transition={{ type: "spring", stiffness: 260, damping: 18 }}
             >
               <Image
-                src="/picture.png"
+                src="/PictureResize2.png"
                 alt="Nati Birhauz"
                 width={280}
                 height={280}

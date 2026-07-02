@@ -107,7 +107,7 @@ export default function Home() {
                   alt="Nati Birhauz"
                   width={280}
                   height={280}
-                  className="animate-float object-cover aspect-square cursor-pointer w-full h-full"
+                  className="animate-float object-contain cursor-pointer w-full h-full"
                   priority
                 />
               </motion.div>

@@ -98,7 +98,7 @@ export default function Home() {
             <div className="relative rounded-full border-[10px] border-emerald-400 shadow-2xl overflow-hidden w-[280px] h-[280px] bg-white">
               <motion.div
                 whileHover={{ scale: 1.07, rotate: 2 }}
-                whileTap={{ scale: 0.95, rotate: -5 }}
+                whileTap={{ scale: 1, rotate: -5 }}
                 transition={{ type: "spring", stiffness: 300, damping: 15 }}
                 className="w-full h-full flex items-center justify-center"
                 style={{ transform: 'scale(1.2)' }}

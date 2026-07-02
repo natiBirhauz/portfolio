@@ -100,15 +100,15 @@ export default function Home() {
                 whileHover={{ scale: 1.07, rotate: 2 }}
                 whileTap={{ scale: 0.85, rotate: -5 }}
                 transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                className="w-full h-full"
+                className="w-full h-full flex items-center justify-center"
+                style={{ transform: 'scale(1.2)' }}
               >
                 <Image
-                  src="/PictureResize2.png"
+                  src="/Picture.png"
                   alt="Nati Birhauz"
                   width={280}
                   height={280}
-                  className="animate-float object-cover cursor-pointer w-full h-full"
-                  style={{ objectPosition: 'center center' }}
+                  className="animate-float cursor-pointer"
                   priority
                 />
               </motion.div>

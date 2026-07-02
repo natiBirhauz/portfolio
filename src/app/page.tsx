@@ -97,15 +97,15 @@ export default function Home() {
             <div className="absolute inset-0 rounded-full bg-emerald-400 animate-pulse-ring" />
             <motion.div
               whileHover={{ scale: 1.07, rotate: 2 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 260, damping: 18 }}
+              whileTap={{ scale: 0.85, rotate: -5 }}
+              transition={{ type: "spring", stiffness: 300, damping: 15 }}
             >
               <Image
                 src="/PictureResize2.png"
                 alt="Nati Birhauz"
                 width={280}
                 height={280}
-                className="relative rounded-full shadow-2xl border-[10px] border-emerald-400 bg-white animate-float object-cover aspect-square"
+                className="relative rounded-full shadow-2xl border-[10px] border-emerald-400 bg-white animate-float object-cover aspect-square cursor-pointer"
                 priority
               />
             </motion.div>

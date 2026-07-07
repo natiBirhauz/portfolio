@@ -110,32 +110,32 @@ export default function Home() {
         animation: 'gradientShift 15s ease infinite',
       }}>
         {/* SVG Low-Poly Triangles Overlay */}
-        <svg className="w-full h-full opacity-40" preserveAspectRatio="xMidYMid slice">
+        <svg className="w-full h-full opacity-50" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
           <defs>
             <filter id="blur">
-              <feGaussianBlur stdDeviation="0.5" />
+              <feGaussianBlur stdDeviation="2" />
             </filter>
           </defs>
           
           {/* Generate random triangular polygons in light green/yellow shades */}
-          {Array.from({ length: 80 }).map((_, i) => {
-            const colors = ['#86efac', '#bbf7d0', '#d9f99d', '#fef9c3', '#a7f3d0', '#6ee7b7'];
+          {Array.from({ length: 120 }).map((_, i) => {
+            const colors = ['#86efac', '#bbf7d0', '#d9f99d', '#fef9c3', '#a7f3d0', '#6ee7b7', '#dcfce7'];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
             
             // Random triangle vertices across the viewport
-            const x1 = Math.random() * 100;
-            const y1 = Math.random() * 100;
-            const x2 = x1 + (Math.random() * 30 - 15);
-            const y2 = y1 + (Math.random() * 30 - 15);
-            const x3 = x1 + (Math.random() * 30 - 15);
-            const y3 = y1 + (Math.random() * 30 - 15);
+            const x1 = Math.random() * 1920;
+            const y1 = Math.random() * 1080;
+            const x2 = x1 + (Math.random() * 400 - 200);
+            const y2 = y1 + (Math.random() * 400 - 200);
+            const x3 = x1 + (Math.random() * 400 - 200);
+            const y3 = y1 + (Math.random() * 400 - 200);
             
             return (
               <polygon
                 key={i}
                 points={`${x1},${y1} ${x2},${y2} ${x3},${y3}`}
                 fill={randomColor}
-                opacity={0.3 + Math.random() * 0.4}
+                opacity={0.4 + Math.random() * 0.5}
                 filter="url(#blur)"
               />
             );

@@ -99,7 +99,7 @@ export default function Home() {
       {/* 2D Low-Poly Triangulated Background - Delaunay Triangulation */}
       <div className="fixed inset-0 z-[1]">
         <svg className="w-full h-full" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-          {/* Generate Delaunay triangulation (non-overlapping mesh) */}
+          {/* Animated morphing triangular mesh */}
           {(() => {
             const triangles = [];
             // Pure light green/mint colors, no yellow
@@ -137,6 +137,10 @@ export default function Home() {
                 const bottomLeft = points[i + cols + 1];
                 const bottomRight = points[i + cols + 2];
                 
+                // Create unique animation delays for each triangle
+                const delay1 = (row * 0.3 + col * 0.2).toFixed(1);
+                const delay2 = (row * 0.3 + col * 0.2 + 0.15).toFixed(1);
+                
                 // First triangle (top-left, top-right, bottom-left)
                 triangles.push(
                   <polygon
@@ -144,6 +148,11 @@ export default function Home() {
                     points={`${topLeft[0]},${topLeft[1]} ${topRight[0]},${topRight[1]} ${bottomLeft[0]},${bottomLeft[1]}`}
                     fill={colors[Math.floor(Math.random() * colors.length)]}
                     opacity={0.9}
+                    style={{
+                      animation: `triangleWiggle 8s ease-in-out infinite`,
+                      animationDelay: `${delay1}s`,
+                      transformOrigin: 'center',
+                    }}
                   />
                 );
                 
@@ -154,6 +163,11 @@ export default function Home() {
                     points={`${topRight[0]},${topRight[1]} ${bottomRight[0]},${bottomRight[1]} ${bottomLeft[0]},${bottomLeft[1]}`}
                     fill={colors[Math.floor(Math.random() * colors.length)]}
                     opacity={0.9}
+                    style={{
+                      animation: `triangleWiggle 8s ease-in-out infinite`,
+                      animationDelay: `${delay2}s`,
+                      transformOrigin: 'center',
+                    }}
                   />
                 );
               }

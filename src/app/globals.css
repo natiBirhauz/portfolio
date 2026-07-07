@@ -44,6 +44,25 @@ html, body {
   animation: blur-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+@keyframes triangleWiggle {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.9;
+  }
+  25% {
+    transform: scale(1.03) translate(2px, -2px);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scale(0.98) translate(-1px, 2px);
+    opacity: 0.85;
+  }
+  75% {
+    transform: scale(1.02) translate(-2px, -1px);
+    opacity: 0.92;
+  }
+}
+
 @keyframes gradientShift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

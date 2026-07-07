@@ -144,69 +144,49 @@ function RainingShapes({ mouseRef }: { mouseRef: MutableRefObject<{ x: number; y
   return <group ref={groupRef} onClick={handleClick} />;
 }
 
-// Connected low-poly background like marble (triangulated mesh network)
+// Static low-poly triangulated background covering the screen
 function LowPolyBackground() {
-  const groupRef = useRef<THREE.Group>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
 
   useEffect(() => {
-    if (!groupRef.current) return;
+    if (!meshRef.current) return;
 
-    // Create a large plane with triangulated faces
-    const geometry = new THREE.IcosahedronGeometry(12, 2); // larger subdivided icosahedron
+    const geometry = meshRef.current.geometry as THREE.PlaneGeometry;
     
-    // Randomize vertices to create irregular low-poly look
+    // Randomize vertex heights to create low-poly terrain effect
     const positions = geometry.attributes.position.array as Float32Array;
     for (let i = 0; i < positions.length; i += 3) {
-      positions[i] += (Math.random() - 0.5) * 1.5;     // x
-      positions[i + 1] += (Math.random() - 0.5) * 1.5; // y
-      positions[i + 2] += (Math.random() - 0.5) * 1.5; // z
+      // Only modify z (height) to create terrain
+      positions[i + 2] = (Math.random() - 0.5) * 3;
     }
     geometry.attributes.position.needsUpdate = true;
     geometry.computeVertexNormals();
 
-    // Create the solid mesh with flat shading
-    const material = new THREE.MeshStandardMaterial({
-      color: "#10b981",
-      flatShading: true,
-      transparent: true,
-      opacity: 0.08,
-      side: THREE.DoubleSide,
-    });
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(0, 0, -15);
-
-    // Create edges (lines connecting the triangles)
-    const edges = new THREE.EdgesGeometry(geometry);
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: "#14b8a6",
-      transparent: true,
-      opacity: 0.25,
-    });
-    const lineSegments = new THREE.LineSegments(edges, lineMaterial);
-    lineSegments.position.set(0, 0, -15);
-
-    groupRef.current.add(mesh);
-    groupRef.current.add(lineSegments);
-
-    return () => {
-      mesh.geometry.dispose();
-      (mesh.material as THREE.Material).dispose();
-      edges.dispose();
-      lineMaterial.dispose();
-      groupRef.current?.remove(mesh);
-      groupRef.current?.remove(lineSegments);
-    };
+    // Randomize colors per face for varied light green shades
+    const colors = [];
+    const color = new THREE.Color();
+    const faceCount = positions.length / 3;
+    
+    for (let i = 0; i < faceCount; i++) {
+      // Random light green shades
+      const greenShade = 0.7 + Math.random() * 0.3; // 0.7 to 1.0
+      color.setRGB(0.4 + Math.random() * 0.3, greenShade, 0.5 + Math.random() * 0.3);
+      colors.push(color.r, color.g, color.b);
+    }
+    
+    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   }, []);
 
-  useFrame(() => {
-    if (!groupRef.current) return;
-    const t = performance.now() / 1000;
-    // very slow rotation to show the 3D structure
-    groupRef.current.rotation.x = t * 0.015;
-    groupRef.current.rotation.y = t * 0.02;
-  });
-
-  return <group ref={groupRef} />;
+  return (
+    <mesh ref={meshRef} rotation={[-Math.PI / 3, 0, 0]} position={[0, -2, -8]}>
+      <planeGeometry args={[40, 30, 30, 20]} />
+      <meshStandardMaterial
+        flatShading
+        vertexColors
+        side={THREE.DoubleSide}
+      />
+    </mesh>
+  );
 }
 
 // Wave grid with mouse interaction

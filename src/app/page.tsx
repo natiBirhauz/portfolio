@@ -96,50 +96,66 @@ export default function Home() {
       {/* 3D Background */}
       <ThreeBackground />
 
-      {/* 2D Low-Poly Triangulated Background */}
-      <div className="fixed inset-0 z-[1]" style={{
-        background: `
-          linear-gradient(135deg, 
-            rgba(134, 239, 172, 0.3) 0%, 
-            rgba(187, 247, 208, 0.3) 25%,
-            rgba(254, 249, 195, 0.3) 50%,
-            rgba(187, 247, 208, 0.3) 75%,
-            rgba(134, 239, 172, 0.3) 100%)
-        `,
-        backgroundSize: '400% 400%',
-        animation: 'gradientShift 15s ease infinite',
-      }}>
-        {/* SVG Low-Poly Triangles Overlay */}
-        <svg className="w-full h-full opacity-50" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <filter id="blur">
-              <feGaussianBlur stdDeviation="2" />
-            </filter>
-          </defs>
-          
-          {/* Generate random triangular polygons in light green/yellow shades */}
-          {Array.from({ length: 120 }).map((_, i) => {
-            const colors = ['#86efac', '#bbf7d0', '#d9f99d', '#fef9c3', '#a7f3d0', '#6ee7b7', '#dcfce7'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      {/* 2D Low-Poly Triangulated Background - Mosaic Style */}
+      <div className="fixed inset-0 z-[1]">
+        {/* SVG Low-Poly Triangles Mosaic */}
+        <svg className="w-full h-full" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+          {/* Generate grid-based triangular mosaic */}
+          {(() => {
+            const triangles = [];
+            const colors = ['#86efac', '#bbf7d0', '#d9f99d', '#fef9c3', '#a7f3d0', '#6ee7b7', '#dcfce7', '#bef264'];
+            const rows = 12;
+            const cols = 20;
+            const width = 1920 / cols;
+            const height = 1080 / rows;
             
-            // Random triangle vertices across the viewport
-            const x1 = Math.random() * 1920;
-            const y1 = Math.random() * 1080;
-            const x2 = x1 + (Math.random() * 400 - 200);
-            const y2 = y1 + (Math.random() * 400 - 200);
-            const x3 = x1 + (Math.random() * 400 - 200);
-            const y3 = y1 + (Math.random() * 400 - 200);
+            for (let row = 0; row < rows; row++) {
+              for (let col = 0; col < cols; col++) {
+                const x = col * width;
+                const y = row * height;
+                
+                // Add random offset to create irregular mosaic
+                const offsetX = (Math.random() - 0.5) * width * 0.5;
+                const offsetY = (Math.random() - 0.5) * height * 0.5;
+                
+                const x1 = x + offsetX;
+                const y1 = y + offsetY;
+                const x2 = x + width + (Math.random() - 0.5) * width * 0.5;
+                const y2 = y + (Math.random() - 0.5) * height * 0.5;
+                const x3 = x + (Math.random() - 0.5) * width * 0.5;
+                const y3 = y + height + (Math.random() - 0.5) * height * 0.5;
+                const x4 = x + width + (Math.random() - 0.5) * width * 0.5;
+                const y4 = y + height + (Math.random() - 0.5) * height * 0.5;
+                
+                // Split each grid cell into two triangles
+                triangles.push(
+                  <polygon
+                    key={`${row}-${col}-a`}
+                    points={`${x1},${y1} ${x2},${y2} ${x3},${y3}`}
+                    fill={colors[Math.floor(Math.random() * colors.length)]}
+                    opacity={0.7 + Math.random() * 0.3}
+                    stroke="#fff"
+                    strokeWidth="0.5"
+                    strokeOpacity="0.3"
+                  />
+                );
+                
+                triangles.push(
+                  <polygon
+                    key={`${row}-${col}-b`}
+                    points={`${x2},${y2} ${x4},${y4} ${x3},${y3}`}
+                    fill={colors[Math.floor(Math.random() * colors.length)]}
+                    opacity={0.7 + Math.random() * 0.3}
+                    stroke="#fff"
+                    strokeWidth="0.5"
+                    strokeOpacity="0.3"
+                  />
+                );
+              }
+            }
             
-            return (
-              <polygon
-                key={i}
-                points={`${x1},${y1} ${x2},${y2} ${x3},${y3}`}
-                fill={randomColor}
-                opacity={0.4 + Math.random() * 0.5}
-                filter="url(#blur)"
-              />
-            );
-          })}
+            return triangles;
+          })()}
         </svg>
       </div>
 

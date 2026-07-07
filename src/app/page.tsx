@@ -96,6 +96,53 @@ export default function Home() {
       {/* 3D Background */}
       <ThreeBackground />
 
+      {/* 2D Low-Poly Triangulated Background */}
+      <div className="fixed inset-0 z-[1]" style={{
+        background: `
+          linear-gradient(135deg, 
+            rgba(134, 239, 172, 0.3) 0%, 
+            rgba(187, 247, 208, 0.3) 25%,
+            rgba(254, 249, 195, 0.3) 50%,
+            rgba(187, 247, 208, 0.3) 75%,
+            rgba(134, 239, 172, 0.3) 100%)
+        `,
+        backgroundSize: '400% 400%',
+        animation: 'gradientShift 15s ease infinite',
+      }}>
+        {/* SVG Low-Poly Triangles Overlay */}
+        <svg className="w-full h-full opacity-40" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <filter id="blur">
+              <feGaussianBlur stdDeviation="0.5" />
+            </filter>
+          </defs>
+          
+          {/* Generate random triangular polygons in light green/yellow shades */}
+          {Array.from({ length: 80 }).map((_, i) => {
+            const colors = ['#86efac', '#bbf7d0', '#d9f99d', '#fef9c3', '#a7f3d0', '#6ee7b7'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Random triangle vertices across the viewport
+            const x1 = Math.random() * 100;
+            const y1 = Math.random() * 100;
+            const x2 = x1 + (Math.random() * 30 - 15);
+            const y2 = y1 + (Math.random() * 30 - 15);
+            const x3 = x1 + (Math.random() * 30 - 15);
+            const y3 = y1 + (Math.random() * 30 - 15);
+            
+            return (
+              <polygon
+                key={i}
+                points={`${x1},${y1} ${x2},${y2} ${x3},${y3}`}
+                fill={randomColor}
+                opacity={0.3 + Math.random() * 0.4}
+                filter="url(#blur)"
+              />
+            );
+          })}
+        </svg>
+      </div>
+
       {/* ---------------------------------------------------- Background animation ---------------------------------------------------- */}
       <NBLogo scrollRange={1600} />
 

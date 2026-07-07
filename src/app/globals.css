@@ -44,6 +44,11 @@ html, body {
   animation: blur-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 @keyframes shimmer-border {
   0%,100% { background-position: 0%   50%; }
   50%     { background-position: 100% 50%; }

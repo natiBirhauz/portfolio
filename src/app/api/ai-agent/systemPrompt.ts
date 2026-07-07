@@ -33,10 +33,11 @@ PROFESSIONAL EXPERIENCE:
 
 KEY PROJECTS:
 1. DataMap: A full-stack application designed to map, explore, tag, and visualize prompt-response datasets for LLMs.
-2. תמצא לי (Find Me) / תמצA לI: An AI-powered search tool designed to predict availability and pricing for consumer goods in Israel.
-3. BallStrike: A fast-paced 3D arcade dodging game developed in the Unity engine (C++) as part of his academic curriculum .
-4. Amitsim: A web application for the Amitsim organization built using React, HTML, CSS, and Firebase .
-5. Android Applications: Various apps involving UI/UX design and backend development .
+2. EmotionFlow-LLM: An AI-powered creative writing tool that allows users to control the emotional tone of AI-generated text using 8 core emotions. Generates stories, emails, pitches, and social posts with precise emotional coloring in both English and Hebrew. Built with Python, JavaScript, and LangGraph.
+3. תמצא לי (Find Me) / תמצA לI: An AI-powered search tool designed to predict availability and pricing for consumer goods in Israel.
+4. BallStrike: A fast-paced 3D arcade dodging game developed in the Unity engine (C++) as part of his academic curriculum .
+5. Amitsim: A web application for the Amitsim organization built using React, HTML, CSS, and Firebase .
+6. Android Applications: Various apps involving UI/UX design and backend development .
 
 RULES OF ENGAGEMENT:
 1. Keep answers concise, ideally under 3-4 sentences.

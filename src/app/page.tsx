@@ -28,6 +28,17 @@ const PROJECTS = [
   },
   {
     key: 1,
+    title: "EmotionFlow",
+    image: "/emotionflow.png",
+    link: "https://emotion-flow-llm-six.vercel.app/",
+    git: "https://github.com/natiBirhauz/EmotionFlow-LLM",
+    tags: ["Python", "JavaScript", "AI/ML Engineer", "LangGraph", "Programmer"],
+    download: null,
+    hideViewProject: false,
+    accent: "from-purple-500 to-pink-500",
+  },
+  {
+    key: 2,
     title: "תמצא לי",
     image: "/tmtza.png",
     link: "https://isr-aeli.vercel.app/",
@@ -38,7 +49,7 @@ const PROJECTS = [
     accent: "from-violet-500 to-blue-500",
   },
   {
-    key: 2,
+    key: 3,
     title: "BallStrike",
     image: "/ballstrike.png",
     link: "https://github.com/natiBirhauz/BallStrike",

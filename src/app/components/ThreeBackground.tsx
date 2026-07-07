@@ -144,6 +144,31 @@ function RainingShapes({ mouseRef }: { mouseRef: MutableRefObject<{ x: number; y
   return <group ref={groupRef} onClick={handleClick} />;
 }
 
+// Low-poly background plane (far back)
+function LowPolyBackground() {
+  const meshRef = useRef<THREE.Mesh>(null);
+
+  useFrame(() => {
+    if (!meshRef.current) return;
+    const t = performance.now() / 1000;
+    // subtle slow rotation
+    meshRef.current.rotation.z = t * 0.02;
+  });
+
+  return (
+    <mesh ref={meshRef} position={[0, 0, -8]} scale={[2, 2, 1]}>
+      <icosahedronGeometry args={[6, 1]} />
+      <meshStandardMaterial
+        color="#10b981"
+        flatShading
+        transparent
+        opacity={0.15}
+        side={THREE.DoubleSide}
+      />
+    </mesh>
+  );
+}
+
 // Wave grid with mouse interaction
 function WaveGrid({ mouseRef }: { mouseRef: MutableRefObject<{ x: number; y: number }> }) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -156,11 +181,6 @@ function WaveGrid({ mouseRef }: { mouseRef: MutableRefObject<{ x: number; y: num
     const time = mesh.userData.time ?? 0;
     // time via clock is fine but avoid state param; use performance time
     const t = performance.now() / 1000;
-
-    // Debug: log mouse position every 60 frames
-    if (Math.floor(t * 60) % 60 === 0) {
-      console.log('Grid mouse:', mouseRef.current.x.toFixed(2), mouseRef.current.y.toFixed(2));
-    }
 
     // Update vertices
     const posArray = geometry.attributes.position.array as Float32Array;
@@ -245,6 +265,7 @@ export default function ThreeBackground() {
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={0.3} />
 
+        <LowPolyBackground />
         <RainingShapes mouseRef={sharedMouse} />
         <WaveGrid mouseRef={sharedMouse} />
       </Canvas>

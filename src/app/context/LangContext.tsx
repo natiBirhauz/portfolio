@@ -32,6 +32,10 @@ const en = {
       description: "DataMap helps you map and understand data used for large language models. Python backend + web frontend for uploading, exploring, tagging, and visualizing prompt–response data.",
     },
     {
+      title: "EmotionFlow",
+      description: "AI-Powered Creative Writing with Emotion Control. Control the emotional tone of AI-generated text using 8 core emotions. Generate stories, emails, pitches, and social posts with precise emotional coloring — in English and Hebrew.",
+    },
+    {
       title: "Find Me",
       description: "An AI tool to check the availability and prices for EVERYTHING — from a pen to a house. This demo is made with AI search prediction.",
     },
@@ -70,6 +74,10 @@ const he: Translations = {
     {
       title: "DataMap",
       description: "DataMap עוזרת לך למפות ולהבין נתונים המשמשים למודלי שפה גדולים. Backend בפייתון ו-Frontend ווב להעלאה, חקירה, תיוג והדמיה של נתוני פרומפט-תשובה.",
+    },
+    {
+      title: "EmotionFlow",
+      description: "כתיבה יצירתית מונעת AI עם שליטה רגשית. שלוט בטון הרגשי של טקסטים שנוצרים על ידי AI באמצעות 8 רגשות ליבה. צור סיפורים, מיילים, מצגות ופוסטים עם צביעה רגשית מדויקת — באנגלית ובעברית.",
     },
     {
       title: "תמצא לי",

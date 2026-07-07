@@ -96,42 +96,56 @@ export default function Home() {
       {/* 3D Background */}
       <ThreeBackground />
 
-      {/* 2D Low-Poly Triangulated Background - Full Coverage Mosaic */}
+      {/* 2D Low-Poly Triangulated Background - Delaunay Triangulation */}
       <div className="fixed inset-0 z-[1]">
         <svg className="w-full h-full" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-          {/* Generate overlapping triangular mosaic covering entire screen */}
+          {/* Generate Delaunay triangulation (non-overlapping mesh) */}
           {(() => {
             const triangles = [];
             const colors = ['#86efac', '#bbf7d0', '#d9f99d', '#fef9c3', '#a7f3d0', '#6ee7b7', '#dcfce7', '#bef264'];
-            const count = 200; // Many overlapping triangles
             
-            for (let i = 0; i < count; i++) {
-              // Random center point
-              const cx = Math.random() * 2200 - 140; // extend beyond viewport
-              const cy = Math.random() * 1300 - 110;
-              
-              // Random triangle size (large to ensure coverage)
-              const size = 150 + Math.random() * 300;
-              
-              // Random rotation
-              const angle = Math.random() * Math.PI * 2;
-              
-              // Create triangle vertices around center
-              const x1 = cx + Math.cos(angle) * size;
-              const y1 = cy + Math.sin(angle) * size;
-              const x2 = cx + Math.cos(angle + 2.094) * size; // 120 degrees
-              const y2 = cy + Math.sin(angle + 2.094) * size;
-              const x3 = cx + Math.cos(angle + 4.189) * size; // 240 degrees
-              const y3 = cy + Math.sin(angle + 4.189) * size;
-              
-              triangles.push(
-                <polygon
-                  key={i}
-                  points={`${x1},${y1} ${x2},${y2} ${x3},${y3}`}
-                  fill={colors[Math.floor(Math.random() * colors.length)]}
-                  opacity={0.8 + Math.random() * 0.2}
-                />
-              );
+            // Create a grid of points with random offsets (vertices)
+            const rows = 15;
+            const cols = 25;
+            const points: [number, number][] = [];
+            
+            for (let row = 0; row <= rows; row++) {
+              for (let col = 0; col <= cols; col++) {
+                const x = (col / cols) * 1920 + (Math.random() - 0.5) * 60;
+                const y = (row / rows) * 1080 + (Math.random() - 0.5) * 60;
+                points.push([x, y]);
+              }
+            }
+            
+            // Simple grid-based triangulation (two triangles per quad)
+            for (let row = 0; row < rows; row++) {
+              for (let col = 0; col < cols; col++) {
+                const i = row * (cols + 1) + col;
+                const topLeft = points[i];
+                const topRight = points[i + 1];
+                const bottomLeft = points[i + cols + 1];
+                const bottomRight = points[i + cols + 2];
+                
+                // First triangle (top-left, top-right, bottom-left)
+                triangles.push(
+                  <polygon
+                    key={`${row}-${col}-a`}
+                    points={`${topLeft[0]},${topLeft[1]} ${topRight[0]},${topRight[1]} ${bottomLeft[0]},${bottomLeft[1]}`}
+                    fill={colors[Math.floor(Math.random() * colors.length)]}
+                    opacity={0.9}
+                  />
+                );
+                
+                // Second triangle (top-right, bottom-right, bottom-left)
+                triangles.push(
+                  <polygon
+                    key={`${row}-${col}-b`}
+                    points={`${topRight[0]},${topRight[1]} ${bottomRight[0]},${bottomRight[1]} ${bottomLeft[0]},${bottomLeft[1]}`}
+                    fill={colors[Math.floor(Math.random() * colors.length)]}
+                    opacity={0.9}
+                  />
+                );
+              }
             }
             
             return triangles;

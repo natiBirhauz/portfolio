@@ -102,7 +102,7 @@ export default function Home() {
           {/* Generate Delaunay triangulation (non-overlapping mesh) */}
           {(() => {
             const triangles = [];
-            // More light green/mint colors, less yellow
+            // Pure light green/mint colors, no yellow
             const colors = [
               '#86efac', // light green
               '#bbf7d0', // very light green
@@ -112,13 +112,12 @@ export default function Home() {
               '#dcfce7', // very pale green
               '#ccfbf1', // cyan-green
               '#a5f3fc', // light cyan
-              '#c7f9cc', // pale lime
-              '#bef264', // lime (accent)
+              '#5eead4', // teal light
             ];
             
             // Create a grid of points with random offsets (vertices)
-            const rows = 15;
-            const cols = 25;
+            const rows = 8;  // reduced from 15 for bigger triangles
+            const cols = 12; // reduced from 25 for bigger triangles
             const points: [number, number][] = [];
             
             for (let row = 0; row <= rows; row++) {

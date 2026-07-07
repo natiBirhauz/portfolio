@@ -285,7 +285,6 @@ export default function ThreeBackground() {
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={0.3} />
 
-        <LowPolyBackground />
         <RainingShapes mouseRef={sharedMouse} />
         <WaveGrid mouseRef={sharedMouse} />
       </Canvas>

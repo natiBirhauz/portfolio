@@ -144,29 +144,91 @@ function RainingShapes({ mouseRef }: { mouseRef: MutableRefObject<{ x: number; y
   return <group ref={groupRef} onClick={handleClick} />;
 }
 
-// Low-poly background plane (far back)
+// Many small low-poly shapes scattered in background
 function LowPolyBackground() {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
+  const shapesRef = useRef<
+    Array<{
+      mesh: THREE.Mesh;
+      rotationSpeed: THREE.Vector3;
+    }>
+  >([]);
+
+  useEffect(() => {
+    if (!groupRef.current) return;
+
+    const shapes: typeof shapesRef.current = [];
+    const shapeCount = 40; // many small shapes
+
+    const geometries = [
+      new THREE.TetrahedronGeometry(1, 0),
+      new THREE.OctahedronGeometry(1, 0),
+      new THREE.IcosahedronGeometry(1, 0),
+      new THREE.BoxGeometry(1.5, 1.5, 1.5),
+    ];
+
+    for (let i = 0; i < shapeCount; i++) {
+      const geo = geometries[Math.floor(Math.random() * geometries.length)];
+      const mat = new THREE.MeshStandardMaterial({
+        color: Math.random() < 0.5 ? "#10b981" : "#14b8a6",
+        flatShading: true,
+        transparent: true,
+        opacity: 0.12 + Math.random() * 0.08,
+        side: THREE.DoubleSide,
+      });
+
+      const mesh = new THREE.Mesh(geo, mat);
+
+      // random scale between 0.4 and 1.2
+      const s = 0.4 + Math.random() * 0.8;
+      mesh.scale.set(s, s, s);
+
+      // spread shapes widely across the scene (far back)
+      mesh.position.set(
+        (Math.random() - 0.5) * 30,  // wide horizontal spread
+        (Math.random() - 0.5) * 20,  // vertical spread
+        -10 - Math.random() * 8      // far back in z
+      );
+
+      // random initial rotation
+      mesh.rotation.set(
+        Math.random() * Math.PI * 2,
+        Math.random() * Math.PI * 2,
+        Math.random() * Math.PI * 2
+      );
+
+      groupRef.current.add(mesh);
+
+      shapes.push({
+        mesh,
+        rotationSpeed: new THREE.Vector3(
+          (Math.random() - 0.5) * 0.01,
+          (Math.random() - 0.5) * 0.01,
+          (Math.random() - 0.5) * 0.01
+        ),
+      });
+    }
+
+    shapesRef.current = shapes;
+
+    return () => {
+      shapes.forEach(({ mesh }) => {
+        if (mesh.parent) mesh.parent.remove(mesh);
+        mesh.geometry.dispose();
+        (mesh.material as THREE.Material).dispose();
+      });
+    };
+  }, []);
 
   useFrame(() => {
-    if (!meshRef.current) return;
-    const t = performance.now() / 1000;
-    // subtle slow rotation
-    meshRef.current.rotation.z = t * 0.02;
+    shapesRef.current.forEach(({ mesh, rotationSpeed }) => {
+      mesh.rotation.x += rotationSpeed.x;
+      mesh.rotation.y += rotationSpeed.y;
+      mesh.rotation.z += rotationSpeed.z;
+    });
   });
 
-  return (
-    <mesh ref={meshRef} position={[0, 0, -8]} scale={[2, 2, 1]}>
-      <icosahedronGeometry args={[6, 1]} />
-      <meshStandardMaterial
-        color="#10b981"
-        flatShading
-        transparent
-        opacity={0.15}
-        side={THREE.DoubleSide}
-      />
-    </mesh>
-  );
+  return <group ref={groupRef} />;
 }
 
 // Wave grid with mouse interaction

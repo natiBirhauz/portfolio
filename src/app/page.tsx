@@ -96,62 +96,42 @@ export default function Home() {
       {/* 3D Background */}
       <ThreeBackground />
 
-      {/* 2D Low-Poly Triangulated Background - Mosaic Style */}
+      {/* 2D Low-Poly Triangulated Background - Full Coverage Mosaic */}
       <div className="fixed inset-0 z-[1]">
-        {/* SVG Low-Poly Triangles Mosaic */}
         <svg className="w-full h-full" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-          {/* Generate grid-based triangular mosaic */}
+          {/* Generate overlapping triangular mosaic covering entire screen */}
           {(() => {
             const triangles = [];
             const colors = ['#86efac', '#bbf7d0', '#d9f99d', '#fef9c3', '#a7f3d0', '#6ee7b7', '#dcfce7', '#bef264'];
-            const rows = 12;
-            const cols = 20;
-            const width = 1920 / cols;
-            const height = 1080 / rows;
+            const count = 200; // Many overlapping triangles
             
-            for (let row = 0; row < rows; row++) {
-              for (let col = 0; col < cols; col++) {
-                const x = col * width;
-                const y = row * height;
-                
-                // Add random offset to create irregular mosaic
-                const offsetX = (Math.random() - 0.5) * width * 0.5;
-                const offsetY = (Math.random() - 0.5) * height * 0.5;
-                
-                const x1 = x + offsetX;
-                const y1 = y + offsetY;
-                const x2 = x + width + (Math.random() - 0.5) * width * 0.5;
-                const y2 = y + (Math.random() - 0.5) * height * 0.5;
-                const x3 = x + (Math.random() - 0.5) * width * 0.5;
-                const y3 = y + height + (Math.random() - 0.5) * height * 0.5;
-                const x4 = x + width + (Math.random() - 0.5) * width * 0.5;
-                const y4 = y + height + (Math.random() - 0.5) * height * 0.5;
-                
-                // Split each grid cell into two triangles
-                triangles.push(
-                  <polygon
-                    key={`${row}-${col}-a`}
-                    points={`${x1},${y1} ${x2},${y2} ${x3},${y3}`}
-                    fill={colors[Math.floor(Math.random() * colors.length)]}
-                    opacity={0.7 + Math.random() * 0.3}
-                    stroke="#fff"
-                    strokeWidth="0.5"
-                    strokeOpacity="0.3"
-                  />
-                );
-                
-                triangles.push(
-                  <polygon
-                    key={`${row}-${col}-b`}
-                    points={`${x2},${y2} ${x4},${y4} ${x3},${y3}`}
-                    fill={colors[Math.floor(Math.random() * colors.length)]}
-                    opacity={0.7 + Math.random() * 0.3}
-                    stroke="#fff"
-                    strokeWidth="0.5"
-                    strokeOpacity="0.3"
-                  />
-                );
-              }
+            for (let i = 0; i < count; i++) {
+              // Random center point
+              const cx = Math.random() * 2200 - 140; // extend beyond viewport
+              const cy = Math.random() * 1300 - 110;
+              
+              // Random triangle size (large to ensure coverage)
+              const size = 150 + Math.random() * 300;
+              
+              // Random rotation
+              const angle = Math.random() * Math.PI * 2;
+              
+              // Create triangle vertices around center
+              const x1 = cx + Math.cos(angle) * size;
+              const y1 = cy + Math.sin(angle) * size;
+              const x2 = cx + Math.cos(angle + 2.094) * size; // 120 degrees
+              const y2 = cy + Math.sin(angle + 2.094) * size;
+              const x3 = cx + Math.cos(angle + 4.189) * size; // 240 degrees
+              const y3 = cy + Math.sin(angle + 4.189) * size;
+              
+              triangles.push(
+                <polygon
+                  key={i}
+                  points={`${x1},${y1} ${x2},${y2} ${x3},${y3}`}
+                  fill={colors[Math.floor(Math.random() * colors.length)]}
+                  opacity={0.8 + Math.random() * 0.2}
+                />
+              );
             }
             
             return triangles;
@@ -159,8 +139,10 @@ export default function Home() {
         </svg>
       </div>
 
-      {/* ---------------------------------------------------- Background animation ---------------------------------------------------- */}
-      <NBLogo scrollRange={1600} />
+      {/* ---------------------------------------------------- Background animation (NB Logo) ---------------------------------------------------- */}
+      <div className="relative z-[3]">
+        <NBLogo scrollRange={1600} />
+      </div>
 
       {/* ---------------------------------------------------- ABOUT ---------------------------------------------------- */}
       <section id="about" className="flex flex-col items-center justify-center min-h-screen gap-10 text-center relative z-10 px-6 pt-8">

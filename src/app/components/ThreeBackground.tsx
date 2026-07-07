@@ -144,88 +144,66 @@ function RainingShapes({ mouseRef }: { mouseRef: MutableRefObject<{ x: number; y
   return <group ref={groupRef} onClick={handleClick} />;
 }
 
-// Many small low-poly shapes scattered in background
+// Connected low-poly background like marble (triangulated mesh network)
 function LowPolyBackground() {
   const groupRef = useRef<THREE.Group>(null);
-  const shapesRef = useRef<
-    Array<{
-      mesh: THREE.Mesh;
-      rotationSpeed: THREE.Vector3;
-    }>
-  >([]);
 
   useEffect(() => {
     if (!groupRef.current) return;
 
-    const shapes: typeof shapesRef.current = [];
-    const shapeCount = 40; // many small shapes
-
-    const geometries = [
-      new THREE.TetrahedronGeometry(1, 0),
-      new THREE.OctahedronGeometry(1, 0),
-      new THREE.IcosahedronGeometry(1, 0),
-      new THREE.BoxGeometry(1.5, 1.5, 1.5),
-    ];
-
-    for (let i = 0; i < shapeCount; i++) {
-      const geo = geometries[Math.floor(Math.random() * geometries.length)];
-      const mat = new THREE.MeshStandardMaterial({
-        color: Math.random() < 0.5 ? "#10b981" : "#14b8a6",
-        flatShading: true,
-        transparent: true,
-        opacity: 0.12 + Math.random() * 0.08,
-        side: THREE.DoubleSide,
-      });
-
-      const mesh = new THREE.Mesh(geo, mat);
-
-      // random scale between 0.4 and 1.2
-      const s = 0.4 + Math.random() * 0.8;
-      mesh.scale.set(s, s, s);
-
-      // spread shapes widely across the scene (far back)
-      mesh.position.set(
-        (Math.random() - 0.5) * 30,  // wide horizontal spread
-        (Math.random() - 0.5) * 20,  // vertical spread
-        -10 - Math.random() * 8      // far back in z
-      );
-
-      // random initial rotation
-      mesh.rotation.set(
-        Math.random() * Math.PI * 2,
-        Math.random() * Math.PI * 2,
-        Math.random() * Math.PI * 2
-      );
-
-      groupRef.current.add(mesh);
-
-      shapes.push({
-        mesh,
-        rotationSpeed: new THREE.Vector3(
-          (Math.random() - 0.5) * 0.01,
-          (Math.random() - 0.5) * 0.01,
-          (Math.random() - 0.5) * 0.01
-        ),
-      });
+    // Create a large plane with triangulated faces
+    const geometry = new THREE.IcosahedronGeometry(12, 2); // larger subdivided icosahedron
+    
+    // Randomize vertices to create irregular low-poly look
+    const positions = geometry.attributes.position.array as Float32Array;
+    for (let i = 0; i < positions.length; i += 3) {
+      positions[i] += (Math.random() - 0.5) * 1.5;     // x
+      positions[i + 1] += (Math.random() - 0.5) * 1.5; // y
+      positions[i + 2] += (Math.random() - 0.5) * 1.5; // z
     }
+    geometry.attributes.position.needsUpdate = true;
+    geometry.computeVertexNormals();
 
-    shapesRef.current = shapes;
+    // Create the solid mesh with flat shading
+    const material = new THREE.MeshStandardMaterial({
+      color: "#10b981",
+      flatShading: true,
+      transparent: true,
+      opacity: 0.08,
+      side: THREE.DoubleSide,
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(0, 0, -15);
+
+    // Create edges (lines connecting the triangles)
+    const edges = new THREE.EdgesGeometry(geometry);
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: "#14b8a6",
+      transparent: true,
+      opacity: 0.25,
+    });
+    const lineSegments = new THREE.LineSegments(edges, lineMaterial);
+    lineSegments.position.set(0, 0, -15);
+
+    groupRef.current.add(mesh);
+    groupRef.current.add(lineSegments);
 
     return () => {
-      shapes.forEach(({ mesh }) => {
-        if (mesh.parent) mesh.parent.remove(mesh);
-        mesh.geometry.dispose();
-        (mesh.material as THREE.Material).dispose();
-      });
+      mesh.geometry.dispose();
+      (mesh.material as THREE.Material).dispose();
+      edges.dispose();
+      lineMaterial.dispose();
+      groupRef.current?.remove(mesh);
+      groupRef.current?.remove(lineSegments);
     };
   }, []);
 
   useFrame(() => {
-    shapesRef.current.forEach(({ mesh, rotationSpeed }) => {
-      mesh.rotation.x += rotationSpeed.x;
-      mesh.rotation.y += rotationSpeed.y;
-      mesh.rotation.z += rotationSpeed.z;
-    });
+    if (!groupRef.current) return;
+    const t = performance.now() / 1000;
+    // very slow rotation to show the 3D structure
+    groupRef.current.rotation.x = t * 0.015;
+    groupRef.current.rotation.y = t * 0.02;
   });
 
   return <group ref={groupRef} />;

@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     const lastUser = [...messages].reverse().find((m) => m.role === 'user');
     const query = lastUser?.content || '';
 
-    // Rate limiting per IP (in-memory). Replace with Upstash/Vercel KV for production.
+    // Rate limiting per IP
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'local';
     const now = Date.now();
     const recent = (RATE_LIMIT_MAP.get(ip) || []).filter((ts) => ts > now - WINDOW_MS);
@@ -36,52 +36,103 @@ export async function POST(req: Request) {
 
     const retrieved = await retrieveRelevant(query);
     const contextText = retrieved.map((r) => `- ${r.title}: ${r.text}`).join('\n');
-
-    // Combine the long system prompt from file with the retrieved context
     const systemPrompt = `${SYSTEM_PROMPT}\n\nContext:\n${contextText}`;
 
-    const outMessages: Message[] = [{ role: 'system', content: systemPrompt }, ...(messages || [])];
-
+    const GEMINI_KEY = process.env.GEMINI_API_KEY;
     const OPENAI_KEY = process.env.OPENAI_API_KEY;
-    if (OPENAI_KEY) {
-      // Proxy to OpenAI with streaming
-      const res = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${OPENAI_KEY}`,
-        },
-        body: JSON.stringify({ model: 'gpt-3.5-turbo', messages: outMessages, stream: true }),
-      });
 
-      if (!res.ok) {
-        const txt = await res.text();
+    // --- Gemini (free tier: 1500 req/day) ---
+    if (GEMINI_KEY) {
+      // Convert messages to Gemini format (no system role — prepend to first user message)
+      const geminiContents = messages
+        .filter((m) => m.role !== 'system')
+        .map((m) => ({
+          role: m.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: m.content }],
+        }));
+
+      // Prepend system prompt into the first user turn
+      if (geminiContents.length > 0 && geminiContents[0].role === 'user') {
+        geminiContents[0].parts[0].text = `${systemPrompt}\n\nUser: ${geminiContents[0].parts[0].text}`;
+      } else {
+        geminiContents.unshift({ role: 'user', parts: [{ text: systemPrompt }] });
+      }
+
+      const geminiRes = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:streamGenerateContent?alt=sse&key=${GEMINI_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: geminiContents }),
+        }
+      );
+
+      if (!geminiRes.ok) {
+        const txt = await geminiRes.text();
         return new Response(txt, { status: 500 });
       }
 
-      // Forward the streaming body to the client
-      const headers = new Headers();
-      headers.set('Content-Type', 'text/event-stream');
-      headers.set('Cache-Control', 'no-cache');
-      return new Response(res.body, { headers });
+      // Transform Gemini SSE → OpenAI-compatible SSE so the frontend works unchanged
+      const encoder = new TextEncoder();
+      const decoder = new TextDecoder();
+      const transformed = new TransformStream({
+        transform(chunk, controller) {
+          const text = decoder.decode(chunk, { stream: true });
+          const lines = text.split('\n');
+          for (const line of lines) {
+            if (!line.startsWith('data:')) continue;
+            const data = line.replace(/^data:\s*/, '').trim();
+            if (!data || data === '[DONE]') continue;
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+              if (content) {
+                const openAIChunk = JSON.stringify({
+                  choices: [{ delta: { content }, finish_reason: null }],
+                });
+                controller.enqueue(encoder.encode(`data: ${openAIChunk}\n\n`));
+              }
+              if (parsed?.candidates?.[0]?.finishReason) {
+                controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+              }
+            } catch {
+              // ignore parse errors
+            }
+          }
+        },
+      });
+
+      geminiRes.body!.pipeThrough(transformed);
+      return new Response(transformed.readable, {
+        headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache' },
+      });
     }
 
-    // Local fallback: simple, grounded answer using retrieved docs
-    let answer = '';
-    if (retrieved.length) {
-      answer = `I found these relevant notes:\n${contextText}\n\nAnswer: Based on the above, here are suggestions and highlights about your work.`;
-    } else {
-      answer = `I don't have documents that match that query exactly. You can ask about RAG, agentic workflows, or specific projects in this portfolio.`;
+    // --- OpenAI fallback ---
+    if (OPENAI_KEY) {
+      const outMessages: Message[] = [{ role: 'system', content: systemPrompt }, ...messages];
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${OPENAI_KEY}` },
+        body: JSON.stringify({ model: 'gpt-3.5-turbo', messages: outMessages, stream: true }),
+      });
+      if (!res.ok) return new Response(await res.text(), { status: 500 });
+      return new Response(res.body, { headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache' } });
     }
+
+    // --- Local fallback (no API key) ---
+    const answer = retrieved.length
+      ? `Based on the available information:\n${contextText}`
+      : `I don't have specific information about that. Contact Nati at nati4455@gmail.com`;
 
     const stream = new ReadableStream({
       start(controller) {
-        const encoder = new TextEncoder();
-        controller.enqueue(encoder.encode(answer));
+        controller.enqueue(new TextEncoder().encode(answer));
         controller.close();
       },
     });
     return new Response(stream, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+
   } catch (err: any) {
     return new Response(String(err?.message || err), { status: 500 });
   }

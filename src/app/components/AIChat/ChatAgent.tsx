@@ -69,6 +69,30 @@ export default function ChatAgent() {
         body: JSON.stringify({ messages: outgoing }),
       });
 
+      if (!res.ok) {
+        let errorMsg =
+          lang === 'he'
+            ? 'שירות Nati-Bot עמוס כרגע. אנא נסה שוב בעוד מספר רגעים או צור קשר עם נתנאל ישירות במייל: nati4455@gmail.com'
+            : 'Nati-Bot is experiencing high traffic. Please try again in a moment or contact Netanel directly at nati4455@gmail.com';
+        try {
+          const errData = await res.json();
+          if (errData?.error === 'rate_limited') {
+            errorMsg =
+              lang === 'he'
+                ? 'נשלחו יותר מדי הודעות בזמן קצר. אנא המתן מעט.'
+                : 'Rate limit reached. Please wait a short while before sending another message.';
+          }
+        } catch {
+          // ignore
+        }
+        setMessages((m) => {
+          const copy = [...m];
+          copy[copy.length - 1] = { role: 'assistant', content: errorMsg, ts: new Date().toISOString() };
+          return copy;
+        });
+        return;
+      }
+
       if (!res.body) {
         const txt = await res.text();
         setMessages((m) => {
@@ -93,7 +117,6 @@ export default function ChatAgent() {
         const chunk = decoder.decode(value, { stream: true });
 
         if (isSSE || chunk.includes('data:')) {
-          // Accumulate and parse Server-Sent Events from OpenAI
           buffer += chunk;
           let splitIndex;
           while ((splitIndex = buffer.indexOf('\n\n')) !== -1) {
@@ -137,9 +160,13 @@ export default function ChatAgent() {
         }
       }
     } catch (err: any) {
+      const friendlyErr =
+        lang === 'he'
+          ? 'אירעה שגיאת תקשורת זמנית. אנא נסה שוב או פנה לנתי ישירות במייל: nati4455@gmail.com'
+          : 'Temporary connection issue. Please try again or reach Nati directly at nati4455@gmail.com';
       setMessages((m) => {
         const copy = [...m];
-        copy[copy.length - 1] = { role: 'assistant', content: 'Error: ' + String(err?.message || err), ts: new Date().toISOString() };
+        copy[copy.length - 1] = { role: 'assistant', content: friendlyErr, ts: new Date().toISOString() };
         return copy;
       });
     } finally {
